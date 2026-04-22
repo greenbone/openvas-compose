@@ -1,17 +1,18 @@
 # Product enterprise-container
 
 ## Table of Services
-1. [greenbone/openvas-scanner](##greenbone/openvas-scanner)
-1. [greenbone/greenbone-feed-sync](##greenbone/greenbone-feed-sync)
-1. [greenbone/greenbone-container-images](##greenbone/greenbone-container-images)
-1. [greenbone/feed-key-service](##greenbone/feed-key-service)
-1. [greenbone/pg-gvm](##greenbone/pg-gvm)
-1. [greenbone/gvmd](##greenbone/gvmd)
-1. [greenbone/gsa](##greenbone/gsa)
-1. [greenbone/gsad](##greenbone/gsad)
-1. [greenbone/gvm-tools](##greenbone/gvm-tools)
-1. [greenbone/ospd-openvas](##greenbone/ospd-openvas)
-1. [greenbone/opensight-ingress](##greenbone/opensight-ingress)
+1. [greenbone/openvas-scanner](#greenboneopenvas-scanner)
+2. [greenbone/greenbone-feed-sync](#greenbonegreenbone-feed-sync)
+3. [greenbone/greenbone-container-images](#greenbonegreenbone-container-images)
+4. [greenbone/feed-key-service](#greenbonefeed-key-service)
+5. [greenbone/pg-gvm](#greenbonepg-gvm)
+6. [greenbone/gvmd](#greenbonegvmd)
+7. [greenbone/gsa](#greenbonegsa)
+8. [greenbone/gsad](#greenbonegsad)
+9. [greenbone/gvm-tools](#greenbonegvm-tools)
+10. [greenbone/ospd-openvas](#greenboneospd-openvas)
+11. [greenbone/opensight-ingress](#greenboneopensight-ingress)
+
 ## greenbone/openvas-scanner
 
 ### Version 23.44.0
