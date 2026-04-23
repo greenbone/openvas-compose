@@ -2,6 +2,21 @@
 
 ## greenbone/openvas-scanner
 
+## Current Service releases used
+| Service | Version |
+|-|-|
+| greenbone/openvas-scanner | 23.44.0 |
+| greenbone/greenbone-feed-sync | 25.2.0 |
+| greenbone/greenbone-container-images | 1.1.3 |
+| greenbone/feed-key-service | 0.3.2 |
+| greenbone/pg-gvm | 22.6.17 |
+| greenbone/gvmd | 26.23.0 |
+| greenbone/gsa | 26.17.0 |
+| greenbone/gsad | 25.2.0 |
+| greenbone/gvm-tools | 26.0.1 |
+| greenbone/ospd-openvas | 22.10.1 |
+| greenbone/opensight-ingress | 1.30.0 |
+
 ### Version 23.44.0
 
 #### Added
