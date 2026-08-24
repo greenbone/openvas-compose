@@ -1,0 +1,2162 @@
+# Product asset
+
+## Table of Services
+1. [greenbone/asset-management-backend](#greenboneasset-management-backend)
+2. [greenbone/asset-management-frontend](#greenboneasset-management-frontend)
+3. [greenbone/opensight-postgres](#greenboneopensight-postgres)
+4. [greenbone/opensight-keycloak](#greenboneopensight-keycloak)
+5. [greenbone/opensight-opensearch](#greenboneopensight-opensearch)
+6. [greenbone/opensight-ingress](#greenboneopensight-ingress)
+7. [greenbone/opensight-notification-service](#greenboneopensight-notification-service)
+8. [greenbone/opensight-notification-frontend](#greenboneopensight-notification-frontend)
+
+
+## Current Services
+| Service | Version |
+|-|-|
+| greenbone/asset-management-backend | 1.35.0 |
+| greenbone/asset-management-frontend | 1.34.0 |
+| greenbone/opensight-postgres | 17.11.0 |
+| greenbone/opensight-keycloak | 27.6.0 |
+| greenbone/opensight-opensearch | 2.22.0 |
+| greenbone/opensight-ingress | 1.33.0 |
+| greenbone/opensight-notification-service | 0.20.0 |
+| greenbone/opensight-notification-frontend | 1.15.0 |
+
+
+## CVEs
+
+[Fixed CVEs](#Fixed-CVEs)
+
+## greenbone/asset-management-backend
+
+### Version 1.35.0
+
+[1.35.0]: https://github.com/greenbone/asset-management-backend/compare/v1.34.0...v1.35.0
+
+
+### Version 1.34.1-alpha7
+
+[1.34.1-alpha7]: https://github.com/greenbone/asset-management-backend/compare/v1.34.1-alpha6...v1.34.1-alpha7
+
+
+### Version 1.34.1-alpha6
+
+[1.34.1-alpha6]: https://github.com/greenbone/asset-management-backend/compare/v1.34.1-alpha5...v1.34.1-alpha6
+
+
+### Version 1.34.1-alpha5
+
+[1.34.1-alpha5]: https://github.com/greenbone/asset-management-backend/compare/v1.34.1-alpha4...v1.34.1-alpha5
+
+
+### Version 1.34.1-alpha4
+
+[1.34.1-alpha4]: https://github.com/greenbone/asset-management-backend/compare/v1.34.1-alpha3...v1.34.1-alpha4
+
+
+### Version 1.34.1-alpha3
+
+[1.34.1-alpha3]: https://github.com/greenbone/asset-management-backend/compare/v1.34.1-alpha2...v1.34.1-alpha3
+
+
+### Version 1.34.1-alpha2
+
+[1.34.1-alpha2]: https://github.com/greenbone/asset-management-backend/compare/v1.34.1-alpha1...v1.34.1-alpha2
+
+
+### Version 1.34.1-alpha1
+
+[1.34.1-alpha1]: https://github.com/greenbone/asset-management-backend/compare/v1.34.0...v1.34.1-alpha1
+
+
+### Version 1.34.0
+
+#### Added
+* patch coverage at 80%, threshold: 0%, and **/mocks/** ignored. (#2120) [6020c1cf](https://github.com/greenbone/asset-management-backend/commit/6020c1cf)
+
+[1.34.0]: https://github.com/greenbone/asset-management-backend/compare/v1.33.0...v1.34.0
+
+
+### Version 1.33.1-alpha4
+
+[1.33.1-alpha4]: https://github.com/greenbone/asset-management-backend/compare/v1.33.1-alpha3...v1.33.1-alpha4
+
+
+### Version 1.33.1-alpha3
+
+#### Added
+* patch coverage at 80%, threshold: 0%, and **/mocks/** ignored. (#2120) [6020c1cf](https://github.com/greenbone/asset-management-backend/commit/6020c1cf)
+
+[1.33.1-alpha3]: https://github.com/greenbone/asset-management-backend/compare/v1.33.1-alpha2...v1.33.1-alpha3
+
+
+### Version 1.33.1-alpha2
+
+[1.33.1-alpha2]: https://github.com/greenbone/asset-management-backend/compare/v1.33.1-alpha1...v1.33.1-alpha2
+
+
+### Version 1.33.1-alpha1
+
+[1.33.1-alpha1]: https://github.com/greenbone/asset-management-backend/compare/v1.33.0...v1.33.1-alpha1
+
+
+### Version 1.33.0
+
+#### Dependencies
+* update openSearch client to `V4.7.1` (#2104) [d6fb77ee](https://github.com/greenbone/asset-management-backend/commit/d6fb77ee)
+
+[1.33.0]: https://github.com/greenbone/asset-management-backend/compare/v1.32.0...v1.33.0
+
+
+### Version 1.32.1-alpha2
+
+[1.32.1-alpha2]: https://github.com/greenbone/asset-management-backend/compare/v1.32.1-alpha1...v1.32.1-alpha2
+
+
+### Version 1.32.1-alpha1
+
+#### Dependencies
+* update openSearch client to `V4.7.1` (#2104) [d6fb77ee](https://github.com/greenbone/asset-management-backend/commit/d6fb77ee)
+
+[1.32.1-alpha1]: https://github.com/greenbone/asset-management-backend/compare/v1.32.0...v1.32.1-alpha1
+
+
+### Version 1.32.0
+
+[1.32.0]: https://github.com/greenbone/asset-management-backend/compare/v1.31.0...v1.32.0
+
+
+### Version 1.31.1-alpha1
+
+[1.31.1-alpha1]: https://github.com/greenbone/asset-management-backend/compare/v1.31.0...v1.31.1-alpha1
+
+
+### Version 1.31.0
+
+#### Changed
+* revise JWT handling: restrict signing method, make more claims required (#2093) [c13d33ce](https://github.com/greenbone/asset-management-backend/commit/c13d33ce)
+
+#### Bug Fixes
+* panic when deleting tags with empty tagging rule filter (#2097) [ae58ad7e](https://github.com/greenbone/asset-management-backend/commit/ae58ad7e)
+* panic when container image report has `has-vt-result` (#2096) [b24cef6e](https://github.com/greenbone/asset-management-backend/commit/b24cef6e)
+* move removeTagsWithNonMatchingFilterFromTaggingRules to tx [6ea85e93](https://github.com/greenbone/asset-management-backend/commit/6ea85e93)
+
+[1.31.0]: https://github.com/greenbone/asset-management-backend/compare/v1.30.0...v1.31.0
+
+
+### Version 1.30.1-alpha5
+
+#### Bug Fixes
+* panic when deleting tags with empty tagging rule filter (#2097) [ae58ad7e](https://github.com/greenbone/asset-management-backend/commit/ae58ad7e)
+
+[1.30.1-alpha5]: https://github.com/greenbone/asset-management-backend/compare/v1.30.1-alpha4...v1.30.1-alpha5
+
+
+### Version 1.30.1-alpha4
+
+#### Changed
+* revise JWT handling: restrict signing method, make more claims required (#2093) [c13d33ce](https://github.com/greenbone/asset-management-backend/commit/c13d33ce)
+
+[1.30.1-alpha4]: https://github.com/greenbone/asset-management-backend/compare/v1.30.1-alpha3...v1.30.1-alpha4
+
+
+### Version 1.30.1-alpha3
+
+#### Bug Fixes
+* panic when container image report has `has-vt-result` (#2096) [b24cef6e](https://github.com/greenbone/asset-management-backend/commit/b24cef6e)
+
+[1.30.1-alpha3]: https://github.com/greenbone/asset-management-backend/compare/v1.30.1-alpha2...v1.30.1-alpha3
+
+
+### Version 1.30.1-alpha2
+
+#### Bug Fixes
+* move removeTagsWithNonMatchingFilterFromTaggingRules to tx [6ea85e93](https://github.com/greenbone/asset-management-backend/commit/6ea85e93)
+
+[1.30.1-alpha2]: https://github.com/greenbone/asset-management-backend/compare/v1.30.1-alpha1...v1.30.1-alpha2
+
+
+### Version 1.30.1-alpha1
+
+[1.30.1-alpha1]: https://github.com/greenbone/asset-management-backend/compare/v1.30.0...v1.30.1-alpha1
+
+
+### Version 1.30.0
+
+#### Added
+* `new data` status for managed appliances (#2091) [b0828ade](https://github.com/greenbone/asset-management-backend/commit/b0828ade)
+
+#### Bug Fixes
+* `ConnectionStatusConnectionManaged` is a valid appliance(managed) connection state (#2092) [c621140e](https://github.com/greenbone/asset-management-backend/commit/c621140e)
+* `managedImportReady` upon uploading reports for managed appliances (#2082) [1cda63d6](https://github.com/greenbone/asset-management-backend/commit/1cda63d6)
+
+[1.30.0]: https://github.com/greenbone/asset-management-backend/compare/v1.29.0...v1.30.0
+
+
+### Version 1.29.1-alpha6
+
+[1.29.1-alpha6]: https://github.com/greenbone/asset-management-backend/compare/v1.29.1-alpha5...v1.29.1-alpha6
+
+
+### Version 1.29.1-alpha5
+
+#### Bug Fixes
+* `ConnectionStatusConnectionManaged` is a valid appliance(managed) connection state (#2092) [c621140e](https://github.com/greenbone/asset-management-backend/commit/c621140e)
+
+[1.29.1-alpha5]: https://github.com/greenbone/asset-management-backend/compare/v1.29.1-alpha4...v1.29.1-alpha5
+
+
+### Version 1.29.1-alpha4
+
+#### Added
+* `new data` status for managed appliances (#2091) [b0828ade](https://github.com/greenbone/asset-management-backend/commit/b0828ade)
+
+[1.29.1-alpha4]: https://github.com/greenbone/asset-management-backend/compare/v1.29.1-alpha3...v1.29.1-alpha4
+
+
+## greenbone/asset-management-frontend
+
+### Version 1.34.0
+
+#### Added
+* asset type badge to pdf + asset detail (#1845) [b61c04bb](https://github.com/greenbone/asset-management-frontend/commit/b61c04bb)
+* Asset Type field to assets (#1844) [8a790b37](https://github.com/greenbone/asset-management-frontend/commit/8a790b37)
+* code cov workflow (#1840) [de154fb6](https://github.com/greenbone/asset-management-frontend/commit/de154fb6)
+
+#### Changed
+* package json to fix npm audit (#1846) [58515891](https://github.com/greenbone/asset-management-frontend/commit/58515891)
+
+[1.34.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.33.0...v1.34.0
+
+
+### Version 1.33.1-alpha5
+
+#### Changed
+* package json to fix npm audit (#1846) [58515891](https://github.com/greenbone/asset-management-frontend/commit/58515891)
+
+[1.33.1-alpha5]: https://github.com/greenbone/asset-management-frontend/compare/v1.33.1-alpha4...v1.33.1-alpha5
+
+
+### Version 1.33.1-alpha4
+
+#### Added
+* asset type badge to pdf + asset detail (#1845) [b61c04bb](https://github.com/greenbone/asset-management-frontend/commit/b61c04bb)
+
+[1.33.1-alpha4]: https://github.com/greenbone/asset-management-frontend/compare/v1.33.1-alpha3...v1.33.1-alpha4
+
+
+### Version 1.33.1-alpha3
+
+#### Added
+* Asset Type field to assets (#1844) [8a790b37](https://github.com/greenbone/asset-management-frontend/commit/8a790b37)
+
+[1.33.1-alpha3]: https://github.com/greenbone/asset-management-frontend/compare/v1.33.1-alpha2...v1.33.1-alpha3
+
+
+### Version 1.33.1-alpha2
+
+[1.33.1-alpha2]: https://github.com/greenbone/asset-management-frontend/compare/v1.33.1-alpha1...v1.33.1-alpha2
+
+
+### Version 1.33.1-alpha1
+
+#### Added
+* code cov workflow (#1840) [de154fb6](https://github.com/greenbone/asset-management-frontend/commit/de154fb6)
+
+[1.33.1-alpha1]: https://github.com/greenbone/asset-management-frontend/compare/v1.33.0...v1.33.1-alpha1
+
+
+### Version 1.33.0
+
+#### Added
+* Translation for side menu nav - About (#1839) [cb08de94](https://github.com/greenbone/asset-management-frontend/commit/cb08de94)
+* EUVD Advisories Menu point (#1834) [190d81b9](https://github.com/greenbone/asset-management-frontend/commit/190d81b9)
+
+#### Changed
+* close modal when user clicks cancel for Tag Rules and Tag Permissions (#1838) [24aced3b](https://github.com/greenbone/asset-management-frontend/commit/24aced3b)
+
+[1.33.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.32.0...v1.33.0
+
+
+### Version 1.32.1-alpha4
+
+#### Added
+* Translation for side menu nav - About (#1839) [cb08de94](https://github.com/greenbone/asset-management-frontend/commit/cb08de94)
+
+[1.32.1-alpha4]: https://github.com/greenbone/asset-management-frontend/compare/v1.32.1-alpha3...v1.32.1-alpha4
+
+
+### Version 1.32.1-alpha3
+
+#### Changed
+* close modal when user clicks cancel for Tag Rules and Tag Permissions (#1838) [24aced3b](https://github.com/greenbone/asset-management-frontend/commit/24aced3b)
+
+[1.32.1-alpha3]: https://github.com/greenbone/asset-management-frontend/compare/v1.32.1-alpha2...v1.32.1-alpha3
+
+
+### Version 1.32.1-alpha2
+
+[1.32.1-alpha2]: https://github.com/greenbone/asset-management-frontend/compare/v1.32.1-alpha1...v1.32.1-alpha2
+
+
+### Version 1.32.1-alpha1
+
+#### Added
+* EUVD Advisories Menu point (#1834) [190d81b9](https://github.com/greenbone/asset-management-frontend/commit/190d81b9)
+
+[1.32.1-alpha1]: https://github.com/greenbone/asset-management-frontend/compare/v1.32.0...v1.32.1-alpha1
+
+
+### Version 1.32.0
+
+#### Added
+* show rule options as read-only checkboxes in accordion item [8836b260](https://github.com/greenbone/asset-management-frontend/commit/8836b260)
+
+#### Changed
+* Use new DataTable in REPORT - (ARTOSI-530) [e6e66f22](https://github.com/greenbone/asset-management-frontend/commit/e6e66f22)
+
+[1.32.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.31.0...v1.32.0
+
+
+### Version 1.31.1-alpha5
+
+[1.31.1-alpha5]: https://github.com/greenbone/asset-management-frontend/compare/v1.31.1-alpha4...v1.31.1-alpha5
+
+
+### Version 1.31.1-alpha4
+
+[1.31.1-alpha4]: https://github.com/greenbone/asset-management-frontend/compare/v1.31.1-alpha3...v1.31.1-alpha4
+
+
+### Version 1.31.1-alpha3
+
+#### Changed
+* Use new DataTable in REPORT - (ARTOSI-530) [e6e66f22](https://github.com/greenbone/asset-management-frontend/commit/e6e66f22)
+
+[1.31.1-alpha3]: https://github.com/greenbone/asset-management-frontend/compare/v1.31.1-alpha2...v1.31.1-alpha3
+
+
+### Version 1.31.1-alpha2
+
+[1.31.1-alpha2]: https://github.com/greenbone/asset-management-frontend/compare/v1.31.1-alpha1...v1.31.1-alpha2
+
+
+### Version 1.31.1-alpha1
+
+#### Added
+* show rule options as read-only checkboxes in accordion item [8836b260](https://github.com/greenbone/asset-management-frontend/commit/8836b260)
+
+[1.31.1-alpha1]: https://github.com/greenbone/asset-management-frontend/compare/v1.31.0...v1.31.1-alpha1
+
+
+### Version 1.31.0
+
+#### Changed
+* adjust new data and import state - (ARTOSI-672) (#1826) [694fd1af](https://github.com/greenbone/asset-management-frontend/commit/694fd1af)
+
+[1.31.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.30.0...v1.31.0
+
+
+### Version 1.30.1-alpha1
+
+#### Changed
+* adjust new data and import state - (ARTOSI-672) (#1826) [694fd1af](https://github.com/greenbone/asset-management-frontend/commit/694fd1af)
+
+[1.30.1-alpha1]: https://github.com/greenbone/asset-management-frontend/compare/v1.30.0...v1.30.1-alpha1
+
+
+### Version 1.30.0
+
+#### Added
+* import data from managed appliances - (ARTOSI-672) (#1823) [df783fc5](https://github.com/greenbone/asset-management-frontend/commit/df783fc5)
+* key to references [93b9e47d](https://github.com/greenbone/asset-management-frontend/commit/93b9e47d)
+* specifically check for http or https instead of using regex [c8376a9c](https://github.com/greenbone/asset-management-frontend/commit/c8376a9c)
+
+#### Changed
+* use user token for exports (#1820) [d4491de2](https://github.com/greenbone/asset-management-frontend/commit/d4491de2)
+* Enable Tag Permissions (#1819) [f0b3b4c2](https://github.com/greenbone/asset-management-frontend/commit/f0b3b4c2)
+* keep the old else part [25ff7de6](https://github.com/greenbone/asset-management-frontend/commit/25ff7de6)
+
+#### Bug Fixes
+* date now to seconds (#1822) [ccc621b2](https://github.com/greenbone/asset-management-frontend/commit/ccc621b2)
+* filename for fetch export (#1821) [602a0438](https://github.com/greenbone/asset-management-frontend/commit/602a0438)
+
+[1.30.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.0...v1.30.0
+
+
+### Version 1.29.1-alpha7
+
+#### Added
+* import data from managed appliances - (ARTOSI-672) (#1823) [df783fc5](https://github.com/greenbone/asset-management-frontend/commit/df783fc5)
+
+[1.29.1-alpha7]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.1-alpha6...v1.29.1-alpha7
+
+
+### Version 1.29.1-alpha6
+
+#### Bug Fixes
+* date now to seconds (#1822) [ccc621b2](https://github.com/greenbone/asset-management-frontend/commit/ccc621b2)
+
+[1.29.1-alpha6]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.1-alpha5...v1.29.1-alpha6
+
+
+### Version 1.29.1-alpha5
+
+#### Bug Fixes
+* filename for fetch export (#1821) [602a0438](https://github.com/greenbone/asset-management-frontend/commit/602a0438)
+
+[1.29.1-alpha5]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.1-alpha4...v1.29.1-alpha5
+
+
+### Version 1.29.1-alpha4
+
+#### Changed
+* use user token for exports (#1820) [d4491de2](https://github.com/greenbone/asset-management-frontend/commit/d4491de2)
+
+[1.29.1-alpha4]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.1-alpha3...v1.29.1-alpha4
+
+
+### Version 1.29.1-alpha3
+
+#### Changed
+* Enable Tag Permissions (#1819) [f0b3b4c2](https://github.com/greenbone/asset-management-frontend/commit/f0b3b4c2)
+
+[1.29.1-alpha3]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.1-alpha2...v1.29.1-alpha3
+
+
+### Version 1.29.1-alpha2
+
+#### Added
+* key to references [93b9e47d](https://github.com/greenbone/asset-management-frontend/commit/93b9e47d)
+
+[1.29.1-alpha2]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.1-alpha1...v1.29.1-alpha2
+
+
+### Version 1.29.1-alpha1
+
+#### Added
+* specifically check for http or https instead of using regex [c8376a9c](https://github.com/greenbone/asset-management-frontend/commit/c8376a9c)
+
+#### Changed
+* keep the old else part [25ff7de6](https://github.com/greenbone/asset-management-frontend/commit/25ff7de6)
+
+[1.29.1-alpha1]: https://github.com/greenbone/asset-management-frontend/compare/v1.29.0...v1.29.1-alpha1
+
+
+### Version 1.29.0
+
+[1.29.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.28.0...v1.29.0
+
+
+### Version 1.28.0
+
+#### Added
+* restrictions for osi.viewer role [8eb25ccc](https://github.com/greenbone/asset-management-frontend/commit/8eb25ccc)
+* use versions from ui-lib and remove local versions component [e9c45c66](https://github.com/greenbone/asset-management-frontend/commit/e9c45c66)
+
+[1.28.0]: https://github.com/greenbone/asset-management-frontend/compare/v1.27.0...v1.28.0
+
+
+### Version 1.27.1-alpha2
+
+#### Added
+* restrictions for osi.viewer role [8eb25ccc](https://github.com/greenbone/asset-management-frontend/commit/8eb25ccc)
+
+[1.27.1-alpha2]: https://github.com/greenbone/asset-management-frontend/compare/v1.27.1-alpha1...v1.27.1-alpha2
+
+
+## greenbone/opensight-keycloak
+
+### Version 27.6.0
+
+#### Changed
+* Do not reset SessionIdleTimeout on every service startup (#466) [bfbca31](https://github.com/greenbone/opensight-keycloak/commit/bfbca31)
+
+#### Dependencies
+* Bump ruff from 0.16.0 to 0.16.1 in /keycloak-sidecar in the python-packages group across 1 directory (#472) [8221b9b](https://github.com/greenbone/opensight-keycloak/commit/8221b9b)
+* Bump js-yaml from 4.3.0 to 4.3.1 in /keycloak-theme (#480) [ecda6db](https://github.com/greenbone/opensight-keycloak/commit/ecda6db)
+* Bump brace-expansion from 1.1.14 to 1.1.18 in /keycloak-theme (#473) [15921cc](https://github.com/greenbone/opensight-keycloak/commit/15921cc)
+* Bump @remix-run/router and react-router-dom in /keycloak-theme (#476) [17849df](https://github.com/greenbone/opensight-keycloak/commit/17849df)
+* Bump postcss from 8.5.15 to 8.5.25 in /keycloak-theme (#468) [1d4e73b](https://github.com/greenbone/opensight-keycloak/commit/1d4e73b)
+* Bump the github-actions group across 1 directory with 2 updates (#463) [1211848](https://github.com/greenbone/opensight-keycloak/commit/1211848)
+* Bump ruff from 0.15.22 to 0.16.0 in /keycloak-sidecar in the python-packages group (#464) [e8eb6cb](https://github.com/greenbone/opensight-keycloak/commit/e8eb6cb)
+
+[27.6.0]: https://github.com/greenbone/opensight-keycloak/compare/v27.5.0...v27.6.0
+
+
+### Version 27.5.1-alpha1
+
+#### Changed
+* Do not reset SessionIdleTimeout on every service startup (#466) [bfbca31](https://github.com/greenbone/opensight-keycloak/commit/bfbca31)
+
+#### Dependencies
+* Bump the github-actions group across 1 directory with 2 updates (#463) [1211848](https://github.com/greenbone/opensight-keycloak/commit/1211848)
+* Bump ruff from 0.15.22 to 0.16.0 in /keycloak-sidecar in the python-packages group (#464) [e8eb6cb](https://github.com/greenbone/opensight-keycloak/commit/e8eb6cb)
+
+[27.5.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v27.5.0...v27.5.1-alpha1
+
+
+### Version 27.5.0
+
+#### Bug Fixes
+* Adding full path of the groups to identify subgroups (#457) [cd2a339](https://github.com/greenbone/opensight-keycloak/commit/cd2a339)
+
+#### Dependencies
+* bump eslint-plugin-react-hooks from 5.2.0 to 7.1.1 in /keycloak-theme (#454) [87233d1](https://github.com/greenbone/opensight-keycloak/commit/87233d1)
+* bump lucide-react from 0.563.0 to 1.24.0 in /keycloak-theme (#451) [1cf8c30](https://github.com/greenbone/opensight-keycloak/commit/1cf8c30)
+* bump shell-quote from 1.8.4 to 1.10.0 in /keycloak-theme (#459) [c5857d9](https://github.com/greenbone/opensight-keycloak/commit/c5857d9)
+* bump js-yaml from 4.2.0 to 4.3.0 in /keycloak-theme (#460) [fa7b1cd](https://github.com/greenbone/opensight-keycloak/commit/fa7b1cd)
+* bump ruff from 0.15.21 to 0.15.22 in /keycloak-sidecar in the python-packages group (#456) [9e87b8b](https://github.com/greenbone/opensight-keycloak/commit/9e87b8b)
+* Bump node from 26.4.0-bullseye to 26.5.0-bullseye in /keycloak (#445) [404fc81](https://github.com/greenbone/opensight-keycloak/commit/404fc81)
+* Bump the python-packages group in /keycloak-sidecar with 3 updates (#447) [cdaeb6e](https://github.com/greenbone/opensight-keycloak/commit/cdaeb6e)
+
+[27.5.0]: https://github.com/greenbone/opensight-keycloak/compare/v27.4.0...v27.5.0
+
+
+### Version 27.4.1-alpha1
+
+#### Bug Fixes
+* Adding full path of the groups to identify subgroups (#457) [cd2a339](https://github.com/greenbone/opensight-keycloak/commit/cd2a339)
+
+#### Dependencies
+* bump ruff from 0.15.21 to 0.15.22 in /keycloak-sidecar in the python-packages group (#456) [9e87b8b](https://github.com/greenbone/opensight-keycloak/commit/9e87b8b)
+* Bump node from 26.4.0-bullseye to 26.5.0-bullseye in /keycloak (#445) [404fc81](https://github.com/greenbone/opensight-keycloak/commit/404fc81)
+* Bump the python-packages group in /keycloak-sidecar with 3 updates (#447) [cdaeb6e](https://github.com/greenbone/opensight-keycloak/commit/cdaeb6e)
+
+[27.4.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v27.4.0...v27.4.1-alpha1
+
+
+### Version 27.4.0
+
+#### Changed
+* Move permission generation to positive resource oriented permissions (#397) [3d4ff3b](https://github.com/greenbone/opensight-keycloak/commit/3d4ff3b)
+
+#### Dependencies
+* Bump the python-packages group in /keycloak-sidecar with 2 updates (#440) [f3b31bb](https://github.com/greenbone/opensight-keycloak/commit/f3b31bb)
+* Bump node from 26.3.1-bullseye to 26.4.0-bullseye in /keycloak (#439) [10f1ce0](https://github.com/greenbone/opensight-keycloak/commit/10f1ce0)
+* Bump keycloak/keycloak from 26.6.3 to 26.6.4 in /keycloak (#438) [61732ef](https://github.com/greenbone/opensight-keycloak/commit/61732ef)
+* Bump actions/checkout from 6 to 7 in the github-actions group (#433) [8b2542a](https://github.com/greenbone/opensight-keycloak/commit/8b2542a)
+* Bump the python-packages group in /keycloak-sidecar with 2 updates (#435) [585728b](https://github.com/greenbone/opensight-keycloak/commit/585728b)
+* Bump node from 26.3.0-bullseye to 26.3.1-bullseye in /keycloak (#434) [b3c1f58](https://github.com/greenbone/opensight-keycloak/commit/b3c1f58)
+
+[27.4.0]: https://github.com/greenbone/opensight-keycloak/compare/v27.3.0...v27.4.0
+
+
+### Version 27.3.1-alpha1
+
+[27.3.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v27.3.0...v27.3.1-alpha1
+
+
+### Version 27.3.0
+
+#### Added
+* Allow CONTROL client to assign osi.push-reports.api role to users (#420) [9697238](https://github.com/greenbone/opensight-keycloak/commit/9697238)
+* Adding new roles to osi backend client (#421) [1fec3c6](https://github.com/greenbone/opensight-keycloak/commit/1fec3c6)
+* Adding groups to be part of the jwt token in dev environment (#415) [902226e](https://github.com/greenbone/opensight-keycloak/commit/902226e)
+* add OSI role defintions (#401) [9fc9128](https://github.com/greenbone/opensight-keycloak/commit/9fc9128)
+
+#### Removed
+* remove obsolete `user` nested role (#424) [f4943d7](https://github.com/greenbone/opensight-keycloak/commit/f4943d7)
+
+#### Changed
+* Set SSO session idle timeout to 5 minutes (#408) [ef876b0](https://github.com/greenbone/opensight-keycloak/commit/ef876b0)
+
+#### Bug Fixes
+* remove reference to non-existing role (#407) [756e24f](https://github.com/greenbone/opensight-keycloak/commit/756e24f)
+
+#### Dependencies
+* Bump node from 26.1.0-bullseye to 26.3.0-bullseye in /keycloak (#417) [b85a05e](https://github.com/greenbone/opensight-keycloak/commit/b85a05e)
+* Bump the python-packages group in /keycloak-sidecar with 2 updates (#426) [d7c1ebd](https://github.com/greenbone/opensight-keycloak/commit/d7c1ebd)
+* Bump keycloak/keycloak from 26.6.1 to 26.6.3 in /keycloak (#418) [fa259c4](https://github.com/greenbone/opensight-keycloak/commit/fa259c4)
+* Bump qs from 6.15.0 to 6.15.2 in /keycloak-theme (#409) [a081405](https://github.com/greenbone/opensight-keycloak/commit/a081405)
+* Bump brace-expansion in /keycloak-theme (#405) [db71346](https://github.com/greenbone/opensight-keycloak/commit/db71346)
+* Bump the python-packages group across 1 directory with 3 updates (#419) [f72d9de](https://github.com/greenbone/opensight-keycloak/commit/f72d9de)
+
+[27.3.0]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.0...v27.3.0
+
+
+### Version 27.2.1-alpha9
+
+[27.2.1-alpha9]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha8...v27.2.1-alpha9
+
+
+### Version 27.2.1-alpha8
+
+#### Dependencies
+* Bump keycloak/keycloak from 26.6.1 to 26.6.3 in /keycloak (#418) [fa259c4](https://github.com/greenbone/opensight-keycloak/commit/fa259c4)
+
+[27.2.1-alpha8]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha7...v27.2.1-alpha8
+
+
+### Version 27.2.1-alpha7
+
+#### Removed
+* remove obsolete `user` nested role (#424) [f4943d7](https://github.com/greenbone/opensight-keycloak/commit/f4943d7)
+
+#### Dependencies
+* Bump qs from 6.15.0 to 6.15.2 in /keycloak-theme (#409) [a081405](https://github.com/greenbone/opensight-keycloak/commit/a081405)
+* Bump brace-expansion in /keycloak-theme (#405) [db71346](https://github.com/greenbone/opensight-keycloak/commit/db71346)
+* Bump the python-packages group across 1 directory with 3 updates (#419) [f72d9de](https://github.com/greenbone/opensight-keycloak/commit/f72d9de)
+
+[27.2.1-alpha7]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha6...v27.2.1-alpha7
+
+
+### Version 27.2.1-alpha6
+
+#### Added
+* Allow CONTROL client to assign osi.push-reports.api role to users (#420) [9697238](https://github.com/greenbone/opensight-keycloak/commit/9697238)
+
+[27.2.1-alpha6]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha5...v27.2.1-alpha6
+
+
+### Version 27.2.1-alpha5
+
+#### Added
+* Adding new roles to osi backend client (#421) [1fec3c6](https://github.com/greenbone/opensight-keycloak/commit/1fec3c6)
+
+[27.2.1-alpha5]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha4...v27.2.1-alpha5
+
+
+### Version 27.2.1-alpha4
+
+#### Added
+* Adding groups to be part of the jwt token in dev environment (#415) [902226e](https://github.com/greenbone/opensight-keycloak/commit/902226e)
+
+[27.2.1-alpha4]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha3...v27.2.1-alpha4
+
+
+### Version 27.2.1-alpha3
+
+#### Changed
+* Set SSO session idle timeout to 5 minutes (#408) [ef876b0](https://github.com/greenbone/opensight-keycloak/commit/ef876b0)
+
+[27.2.1-alpha3]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha2...v27.2.1-alpha3
+
+
+### Version 27.2.1-alpha2
+
+#### Bug Fixes
+* remove reference to non-existing role (#407) [756e24f](https://github.com/greenbone/opensight-keycloak/commit/756e24f)
+
+[27.2.1-alpha2]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.1-alpha1...v27.2.1-alpha2
+
+
+### Version 27.2.1-alpha1
+
+#### Added
+* add OSI role defintions (#401) [9fc9128](https://github.com/greenbone/opensight-keycloak/commit/9fc9128)
+
+[27.2.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v27.2.0...v27.2.1-alpha1
+
+
+### Version 27.2.0
+
+#### Added
+* Configure OSI roles (#387) [4bbb7fb](https://github.com/greenbone/opensight-keycloak/commit/4bbb7fb)
+
+#### Changed
+* remove roles with limited keyclaok admin access  (#399) [cf97480](https://github.com/greenbone/opensight-keycloak/commit/cf97480)
+
+[27.2.0]: https://github.com/greenbone/opensight-keycloak/compare/v27.1.0...v27.2.0
+
+
+### Version 27.1.1-alpha3
+
+#### Changed
+* remove roles with limited keyclaok admin access  (#399) [cf97480](https://github.com/greenbone/opensight-keycloak/commit/cf97480)
+
+[27.1.1-alpha3]: https://github.com/greenbone/opensight-keycloak/compare/v27.1.1-alpha2...v27.1.1-alpha3
+
+
+### Version 27.1.1-alpha2
+
+[27.1.1-alpha2]: https://github.com/greenbone/opensight-keycloak/compare/v27.1.1-alpha1...v27.1.1-alpha2
+
+
+### Version 27.1.1-alpha1
+
+#### Added
+* Configure OSI roles (#387) [4bbb7fb](https://github.com/greenbone/opensight-keycloak/commit/4bbb7fb)
+
+[27.1.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v27.1.0...v27.1.1-alpha1
+
+
+### Version 27.1.0
+
+#### Added
+* Permissions to view users and groups for asset-backend client (#383) [b550490](https://github.com/greenbone/opensight-keycloak/commit/b550490)
+
+[27.1.0]: https://github.com/greenbone/opensight-keycloak/compare/v27.0.0...v27.1.0
+
+
+### Version 27.0.1-alpha2
+
+#### Added
+* Permissions to view users and groups for asset-backend client (#383) [b550490](https://github.com/greenbone/opensight-keycloak/commit/b550490)
+
+[27.0.1-alpha2]: https://github.com/greenbone/opensight-keycloak/compare/v27.0.1-alpha1...v27.0.1-alpha2
+
+
+### Version 27.0.1-alpha1
+
+[27.0.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v27.0.0...v27.0.1-alpha1
+
+
+### Version 27.0.0
+
+#### Changed
+* add VI & asset backend service accounts, assign control backend client notification role (#371) [2e88088](https://github.com/greenbone/opensight-keycloak/commit/2e88088)
+
+#### Bug Fixes
+* add missing `_FILE` suffix for Asset BE client secret env var (#375) [6e1ec32](https://github.com/greenbone/opensight-keycloak/commit/6e1ec32)
+
+[27.0.0]: https://github.com/greenbone/opensight-keycloak/compare/v26.7.0...v27.0.0
+
+
+### Version 26.7.1-alpha2
+
+#### Bug Fixes
+* add missing `_FILE` suffix for Asset BE client secret env var (#375) [6e1ec32](https://github.com/greenbone/opensight-keycloak/commit/6e1ec32)
+
+[26.7.1-alpha2]: https://github.com/greenbone/opensight-keycloak/compare/v26.7.1-alpha1...v26.7.1-alpha2
+
+
+### Version 26.7.1-alpha1
+
+#### Changed
+* add VI & asset backend service accounts, assign control backend client notification role (#371) [2e88088](https://github.com/greenbone/opensight-keycloak/commit/2e88088)
+
+[26.7.1-alpha1]: https://github.com/greenbone/opensight-keycloak/compare/v26.7.0...v26.7.1-alpha1
+
+
+## greenbone/opensight-opensearch
+
+### Version 2.22.0
+
+[2.22.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.21.0...v2.22.0
+
+
+### Version 2.21.1-alpha1
+
+[2.21.1-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.21.0...v2.21.1-alpha1
+
+
+### Version 2.21.0
+
+[2.21.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.20.0...v2.21.0
+
+
+### Version 2.20.1-alpha1
+
+[2.20.1-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.20.0...v2.20.1-alpha1
+
+
+### Version 2.20.0
+
+#### Changed
+* replace patch with hotfix in release.yml (#63) [a1c2dc1](https://github.com/greenbone/opensight-opensearch/commit/a1c2dc1)
+
+[2.20.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.5...v2.20.0
+
+
+### Version 2.19.6-alpha4
+
+[2.19.6-alpha4]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.6-alpha3...v2.19.6-alpha4
+
+
+### Version 2.19.6-alpha3
+
+[2.19.6-alpha3]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.6-alpha2...v2.19.6-alpha3
+
+
+### Version 2.19.6-alpha2
+
+#### Changed
+* replace patch with hotfix in release.yml (#63) [a1c2dc1](https://github.com/greenbone/opensight-opensearch/commit/a1c2dc1)
+
+[2.19.6-alpha2]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.6-alpha1...v2.19.6-alpha2
+
+
+### Version 2.19.6-alpha1
+
+[2.19.6-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.5...v2.19.6-alpha1
+
+
+### Version 2.19.5
+
+[2.19.5]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.4...v2.19.5
+
+
+### Version 2.19.5-alpha1
+
+[2.19.5-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.4...v2.19.5-alpha1
+
+
+### Version 2.19.4
+
+#### Bug Fixes
+* trap term and int signals and forward them to Opensearch (#57) [0d47ddc](https://github.com/greenbone/opensight-opensearch/commit/0d47ddc)
+* trap term and int signals and forward them to Opensearch [dcea639](https://github.com/greenbone/opensight-opensearch/commit/dcea639)
+
+[2.19.4]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.3...v2.19.4
+
+
+### Version 2.19.4-alpha2
+
+#### Bug Fixes
+* trap term and int signals and forward them to Opensearch (#57) [0d47ddc](https://github.com/greenbone/opensight-opensearch/commit/0d47ddc)
+* trap term and int signals and forward them to Opensearch [dcea639](https://github.com/greenbone/opensight-opensearch/commit/dcea639)
+
+[2.19.4-alpha2]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.4-alpha1...v2.19.4-alpha2
+
+
+### Version 2.19.4-alpha1
+
+[2.19.4-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.3...v2.19.4-alpha1
+
+
+### Version 2.19.3
+
+[2.19.3]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.2...v2.19.3
+
+
+### Version 2.19.3-rc1
+
+[2.19.3-rc1]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.2...v2.19.3-rc1
+
+
+### Version 2.19.2
+
+[2.19.2]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.1...v2.19.2
+
+
+### Version 2.19.1
+
+[2.19.1]: https://github.com/greenbone/opensight-opensearch/compare/v2.19.0...v2.19.1
+
+
+### Version 2.19.0
+
+[2.19.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.18.2...v2.19.0
+
+
+### Version 2.18.2
+
+#### Changed
+* use uid/gid 10001 for opensearch (#48) [15166a4](https://github.com/greenbone/opensight-opensearch/commit/15166a4)
+
+[2.18.2]: https://github.com/greenbone/opensight-opensearch/compare/v2.18.1...v2.18.2
+
+
+### Version 2.18.2-alpha1
+
+
+### Version 2.18.1
+
+#### Added
+* support reading secrets from files (#46) [51757d7](https://github.com/greenbone/opensight-opensearch/commit/51757d7)
+
+[2.18.1]: https://github.com/greenbone/opensight-opensearch/compare/v2.18.0...v2.18.1
+
+
+### Version 2.18.0
+
+#### Changed
+* to new product compose workflow (#44) [0c19c8e](https://github.com/greenbone/opensight-opensearch/commit/0c19c8e)
+
+[2.18.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.17.0...v2.18.0
+
+
+### Version 2.17.0
+
+[2.17.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.16.0...v2.17.0
+
+
+### Version 2.16.0
+
+[2.16.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.15.0...v2.16.0
+
+
+### Version 2.15.0
+
+[2.15.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.14.1...v2.15.0
+
+
+### Version 2.14.2-alpha1
+
+[2.14.2-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.14.1...v2.14.2-alpha1
+
+
+### Version 2.14.1
+
+#### Added
+* added comment in the entrypoint script to make clear where the original comes from [686d204](https://github.com/greenbone/opensight-opensearch/commit/686d204)
+
+#### Bug Fixes
+* changed the KEYCLOAK_URL parameter to exclude http:// as this is already part of the environment variable [fa8ba88](https://github.com/greenbone/opensight-opensearch/commit/fa8ba88)
+* perform a update of the security settings after startup to make shure the actual config is taken [7199365](https://github.com/greenbone/opensight-opensearch/commit/7199365)
+* added new setup for keycloak authentication [4300e0e](https://github.com/greenbone/opensight-opensearch/commit/4300e0e)
+
+[2.14.1]: https://github.com/greenbone/opensight-opensearch/compare/v2.14.0...v2.14.1
+
+
+### Version 2.14.1-alpha1
+
+#### Added
+* added comment in the entrypoint script to make clear where the original comes from [686d204](https://github.com/greenbone/opensight-opensearch/commit/686d204)
+
+#### Bug Fixes
+* changed the KEYCLOAK_URL parameter to exclude http:// as this is already part of the environment variable [fa8ba88](https://github.com/greenbone/opensight-opensearch/commit/fa8ba88)
+* perform a update of the security settings after startup to make shure the actual config is taken [7199365](https://github.com/greenbone/opensight-opensearch/commit/7199365)
+* added new setup for keycloak authentication [4300e0e](https://github.com/greenbone/opensight-opensearch/commit/4300e0e)
+
+[2.14.1-alpha1]: https://github.com/greenbone/opensight-opensearch/compare/v2.14.0...v2.14.1-alpha1
+
+
+### Version 2.14.0
+
+[2.14.0]: https://github.com/greenbone/opensight-opensearch/compare/v2.13.0...v2.14.0
+
+
+## greenbone/opensight-ingress
+
+### Version 1.33.0
+
+#### Dependencies
+* Bump nginxinc/nginx-unprivileged from 1.31.2 to 1.31.3 (#34) [d32e84f](https://github.com/greenbone/opensight-ingress/commit/d32e84f)
+
+[1.33.0]: https://github.com/greenbone/opensight-ingress/compare/v1.32.0...v1.33.0
+
+
+### Version 1.32.1-alpha1
+
+#### Dependencies
+* Bump nginxinc/nginx-unprivileged from 1.31.2 to 1.31.3 (#34) [d32e84f](https://github.com/greenbone/opensight-ingress/commit/d32e84f)
+
+[1.32.1-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.32.0...v1.32.1-alpha1
+
+
+### Version 1.32.0
+
+#### Dependencies
+* Bump nginxinc/nginx-unprivileged from 1.31.1 to 1.31.2 (#33) [67b78d0](https://github.com/greenbone/opensight-ingress/commit/67b78d0)
+
+[1.32.0]: https://github.com/greenbone/opensight-ingress/compare/v1.31.0...v1.32.0
+
+
+### Version 1.31.1-alpha1
+
+#### Dependencies
+* Bump nginxinc/nginx-unprivileged from 1.31.1 to 1.31.2 (#33) [67b78d0](https://github.com/greenbone/opensight-ingress/commit/67b78d0)
+
+[1.31.1-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.31.0...v1.31.1-alpha1
+
+
+### Version 1.31.0
+
+[1.31.0]: https://github.com/greenbone/opensight-ingress/compare/v1.30.0...v1.31.0
+
+
+### Version 1.30.1-alpha1
+
+[1.30.1-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.30.0...v1.30.1-alpha1
+
+
+### Version 1.30.0
+
+[1.30.0]: https://github.com/greenbone/opensight-ingress/compare/v1.29.0...v1.30.0
+
+#### Bug Fixes
+
+- Updated image containing new openssl version fixing several vulnerabilities.
+
+
+### Version 1.29.1-alpha1
+
+[1.29.1-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.29.0...v1.29.1-alpha1
+
+
+#### Bug Fixes
+
+- Updated image containing new openssl version fixing several vulnerabilities.
+
+
+### Version 1.29.0
+
+#### Added
+* A job to build and push SBOM with trivy (#20) [c2b1042](https://github.com/greenbone/opensight-ingress/commit/c2b1042)
+
+#### Removed
+* Job to generate and push SBOM (#22) [d039c81](https://github.com/greenbone/opensight-ingress/commit/d039c81)
+
+#### Changed
+* replace patch with hotfix in release.yml (#21) [6cfb0a2](https://github.com/greenbone/opensight-ingress/commit/6cfb0a2)
+
+#### Bug Fixes
+* exclude /proc (#23) [7339cd6](https://github.com/greenbone/opensight-ingress/commit/7339cd6)
+
+[1.29.0]: https://github.com/greenbone/opensight-ingress/compare/v1.28.2...v1.29.0
+
+
+### Version 1.28.3-alpha1
+
+#### Added
+* A job to build and push SBOM with trivy (#20) [c2b1042](https://github.com/greenbone/opensight-ingress/commit/c2b1042)
+
+[1.28.3-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.28.2...v1.28.3-alpha1
+
+
+### Version 1.28.2
+
+[1.28.2]: https://github.com/greenbone/opensight-ingress/compare/v1.28.1...v1.28.2
+
+
+### Version 1.28.1
+
+#### Added
+* configuration for SBOM uploads (#15) [8b0c257](https://github.com/greenbone/opensight-ingress/commit/8b0c257)
+* Configure stream context to allow ssl pass through for websockets (#14) [6cf7e86](https://github.com/greenbone/opensight-ingress/commit/6cf7e86)
+
+#### Changed
+* Move maps and locations to compose (#17) [ce33780](https://github.com/greenbone/opensight-ingress/commit/ce33780)
+
+[1.28.1]: https://github.com/greenbone/opensight-ingress/compare/v1.28.0...v1.28.1
+
+
+### Version 1.28.1-alpha6
+
+#### Changed
+* Move maps and locations to compose (#17) [ce33780](https://github.com/greenbone/opensight-ingress/commit/ce33780)
+
+[1.28.1-alpha6]: https://github.com/greenbone/opensight-ingress/compare/v1.28.1-alpha5...v1.28.1-alpha6
+
+
+### Version 1.28.1-alpha5
+
+
+### Version 1.28.1-alpha4
+
+[1.28.1-alpha4]: https://github.com/greenbone/opensight-ingress/compare/v1.28.1-alpha3...v1.28.1-alpha4
+
+
+### Version 1.28.1-alpha3
+
+#### Added
+* configuration for SBOM uploads (#15) [8b0c257](https://github.com/greenbone/opensight-ingress/commit/8b0c257)
+
+[1.28.1-alpha3]: https://github.com/greenbone/opensight-ingress/compare/v1.28.1-alpha2...v1.28.1-alpha3
+
+
+### Version 1.28.1-alpha2
+
+#### Added
+* Configure stream context to allow ssl pass through for websockets (#14) [6cf7e86](https://github.com/greenbone/opensight-ingress/commit/6cf7e86)
+
+[1.28.1-alpha2]: https://github.com/greenbone/opensight-ingress/compare/v1.28.1-alpha1...v1.28.1-alpha2
+
+
+### Version 1.28.1-alpha1
+
+[1.28.1-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.28.0...v1.28.1-alpha1
+
+
+### Version 1.28.0
+
+#### Added
+* Nginx configuration to allow websockets (#12) [61e3179](https://github.com/greenbone/opensight-ingress/commit/61e3179)
+
+#### Changed
+* use uid/gid 10004 for ingress nginx (#11) [eb2a9a6](https://github.com/greenbone/opensight-ingress/commit/eb2a9a6)
+
+[1.28.0]: https://github.com/greenbone/opensight-ingress/compare/v1.27.4...v1.28.0
+
+
+### Version 1.27.5-alpha2
+
+#### Added
+* Nginx configuration to allow websockets (#12) [61e3179](https://github.com/greenbone/opensight-ingress/commit/61e3179)
+
+#### Changed
+* use uid/gid 10004 for ingress nginx (#11) [eb2a9a6](https://github.com/greenbone/opensight-ingress/commit/eb2a9a6)
+
+[1.27.5-alpha2]: https://github.com/greenbone/opensight-ingress/compare/v1.27.5-alpha1...v1.27.5-alpha2
+
+
+### Version 1.27.5-alpha1
+
+
+### Version 1.27.4
+
+#### Added
+* UM backend (#9) [942fc2e](https://github.com/greenbone/opensight-ingress/commit/942fc2e)
+
+[1.27.4]: https://github.com/greenbone/opensight-ingress/compare/v1.27.3...v1.27.4
+
+
+### Version 1.27.4-alpha3
+
+[1.27.4-alpha3]: https://github.com/greenbone/opensight-ingress/compare/v1.27.4-alpha2...v1.27.4-alpha3
+
+
+### Version 1.27.4-alpha2
+
+[1.27.4-alpha2]: https://github.com/greenbone/opensight-ingress/compare/v1.27.4-alpha1...v1.27.4-alpha2
+
+
+### Version 1.27.4-alpha1
+
+#### Added
+* UM backend (#9) [942fc2e](https://github.com/greenbone/opensight-ingress/commit/942fc2e)
+
+[1.27.4-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.27.3...v1.27.4-alpha1
+
+
+### Version 1.27.3
+
+#### Added
+* user management frontend to ingress (#7) [e5f16ab](https://github.com/greenbone/opensight-ingress/commit/e5f16ab)
+
+#### Bug Fixes
+* allow keycloak admin panel access for lookout non-production systems (#6) [50e9dfe](https://github.com/greenbone/opensight-ingress/commit/50e9dfe)
+
+[1.27.3]: https://github.com/greenbone/opensight-ingress/compare/v1.27.2...v1.27.3
+
+
+### Version 1.27.3-alpha2
+
+#### Bug Fixes
+* allow keycloak admin panel access for lookout non-production systems (#6) [50e9dfe](https://github.com/greenbone/opensight-ingress/commit/50e9dfe)
+
+[1.27.3-alpha2]: https://github.com/greenbone/opensight-ingress/compare/v1.27.3-alpha1...v1.27.3-alpha2
+
+
+### Version 1.27.3-alpha1
+
+[1.27.3-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.27.2...v1.27.3-alpha1
+
+
+### Version 1.27.2
+
+#### Changed
+* Backend url of management console (#4) [72d1f10](https://github.com/greenbone/opensight-ingress/commit/72d1f10)
+* to new product compose workflow (#3) [b07f01a](https://github.com/greenbone/opensight-ingress/commit/b07f01a)
+
+[1.27.2]: https://github.com/greenbone/opensight-ingress/compare/v1.27.1...v1.27.2
+
+
+### Version 1.27.2-alpha1
+
+#### Changed
+* Backend url of management console (#4) [72d1f10](https://github.com/greenbone/opensight-ingress/commit/72d1f10)
+* to new product compose workflow (#3) [b07f01a](https://github.com/greenbone/opensight-ingress/commit/b07f01a)
+
+[1.27.2-alpha1]: https://github.com/greenbone/opensight-ingress/compare/v1.27.1...v1.27.2-alpha1
+
+
+## greenbone/opensight-notification-service
+
+### Version 0.20.0
+
+#### Changed
+* revise JWT handling: restrict signing method, make more claims required (#238) [fb38925](https://github.com/greenbone/opensight-notification-service/commit/fb38925)
+
+#### Dependencies
+* Bump actions/setup-go from 6 to 7 in the github-actions group (#242) [00f7f26](https://github.com/greenbone/opensight-notification-service/commit/00f7f26)
+* Bump the go-modules group with 9 updates (#240) [e5b5e81](https://github.com/greenbone/opensight-notification-service/commit/e5b5e81)
+* Bump the go-modules group with 5 updates (#239) [b6d1604](https://github.com/greenbone/opensight-notification-service/commit/b6d1604)
+* Bump golang from 1.26.4-alpine to 1.26.5-alpine (#237) [1aebdcf](https://github.com/greenbone/opensight-notification-service/commit/1aebdcf)
+* Bump the go-modules group with 5 updates (#236) [36790b6](https://github.com/greenbone/opensight-notification-service/commit/36790b6)
+* Bump the go-modules group with 11 updates (#235) [cf116c3](https://github.com/greenbone/opensight-notification-service/commit/cf116c3)
+
+[0.20.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.19.0...v0.20.0
+
+
+### Version 0.19.1-alpha1
+
+#### Changed
+* revise JWT handling: restrict signing method, make more claims required (#238) [fb38925](https://github.com/greenbone/opensight-notification-service/commit/fb38925)
+
+#### Dependencies
+* Bump golang from 1.26.4-alpine to 1.26.5-alpine (#237) [1aebdcf](https://github.com/greenbone/opensight-notification-service/commit/1aebdcf)
+* Bump the go-modules group with 5 updates (#236) [36790b6](https://github.com/greenbone/opensight-notification-service/commit/36790b6)
+* Bump the go-modules group with 11 updates (#235) [cf116c3](https://github.com/greenbone/opensight-notification-service/commit/cf116c3)
+
+[0.19.1-alpha1]: https://github.com/greenbone/opensight-notification-service/compare/v0.19.0...v0.19.1-alpha1
+
+
+### Version 0.19.0
+
+[0.19.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.18.0...v0.19.0
+
+
+### Version 0.18.0
+
+#### Removed
+* remove obsolete nested roles `user` and `admin` (#230) [59e6875](https://github.com/greenbone/opensight-notification-service/commit/59e6875)
+
+#### Dependencies
+* Bump actions/checkout from 6 to 7 in the github-actions group (#234) [e28bd7e](https://github.com/greenbone/opensight-notification-service/commit/e28bd7e)
+
+[0.18.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.17.0...v0.18.0
+
+
+### Version 0.16.1-alpha1
+
+#### Removed
+* remove obsolete nested roles `user` and `admin` (#230) [59e6875](https://github.com/greenbone/opensight-notification-service/commit/59e6875)
+
+[0.16.1-alpha1]: https://github.com/greenbone/opensight-notification-service/compare/v0.16.0...v0.16.1-alpha1
+
+
+### Version 0.16.0
+
+#### Added
+* Pre commit config & go vuln check [74f886d](https://github.com/greenbone/opensight-notification-service/commit/74f886d)
+* role osi.user allowed for PUT OPTIONS /notifications (#217) [50225cb](https://github.com/greenbone/opensight-notification-service/commit/50225cb)
+
+#### Changed
+* allow notification admin to read notifications (#232) [2add128](https://github.com/greenbone/opensight-notification-service/commit/2add128)
+* Allow all new roles to endpoints (#221) [3ba8fe2](https://github.com/greenbone/opensight-notification-service/commit/3ba8fe2)
+* Unify permission tests & test all endpoints [2e76aea](https://github.com/greenbone/opensight-notification-service/commit/2e76aea)
+* Allow all new roles to endpoints and keep old ones for backward compatibility [8c1a5a8](https://github.com/greenbone/opensight-notification-service/commit/8c1a5a8)
+
+#### Bug Fixes
+* give role `osi.admin` permissions for all settings related endpoints (#225) [9993246](https://github.com/greenbone/opensight-notification-service/commit/9993246)
+
+#### Dependencies
+* Bump the go-modules group with 7 updates [0c2c2ee](https://github.com/greenbone/opensight-notification-service/commit/0c2c2ee)
+* Bump codecov/codecov-action in the github-actions group [02bbb14](https://github.com/greenbone/opensight-notification-service/commit/02bbb14)
+* Bump codecov/codecov-action in the github-actions group [b827273](https://github.com/greenbone/opensight-notification-service/commit/b827273)
+
+[0.16.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.15.0...v0.16.0
+
+
+### Version 0.15.1-alpha3
+
+#### Bug Fixes
+* give role `osi.admin` permissions for all settings related endpoints (#225) [9993246](https://github.com/greenbone/opensight-notification-service/commit/9993246)
+
+[0.15.1-alpha3]: https://github.com/greenbone/opensight-notification-service/compare/v0.15.1-alpha2...v0.15.1-alpha3
+
+
+### Version 0.15.1-alpha2
+
+#### Added
+* Pre commit config & go vuln check [74f886d](https://github.com/greenbone/opensight-notification-service/commit/74f886d)
+
+#### Changed
+* Allow all new roles to endpoints (#221) [3ba8fe2](https://github.com/greenbone/opensight-notification-service/commit/3ba8fe2)
+* Unify permission tests & test all endpoints [2e76aea](https://github.com/greenbone/opensight-notification-service/commit/2e76aea)
+* Allow all new roles to endpoints and keep old ones for backward compatibility [8c1a5a8](https://github.com/greenbone/opensight-notification-service/commit/8c1a5a8)
+
+#### Dependencies
+* Bump codecov/codecov-action in the github-actions group [b827273](https://github.com/greenbone/opensight-notification-service/commit/b827273)
+
+[0.15.1-alpha2]: https://github.com/greenbone/opensight-notification-service/compare/v0.15.1-alpha1...v0.15.1-alpha2
+
+
+### Version 0.15.1-alpha1
+
+#### Added
+* role osi.user allowed for PUT OPTIONS /notifications (#217) [50225cb](https://github.com/greenbone/opensight-notification-service/commit/50225cb)
+
+[0.15.1-alpha1]: https://github.com/greenbone/opensight-notification-service/compare/v0.15.0...v0.15.1-alpha1
+
+
+### Version 0.15.0
+
+#### Changed
+* sort origin options alphabetically, highlight special origin `All` (#211) [5f21a9b](https://github.com/greenbone/opensight-notification-service/commit/5f21a9b)
+
+#### Dependencies
+* bump codecov/codecov-action in the github-actions group [39d14e7](https://github.com/greenbone/opensight-notification-service/commit/39d14e7)
+
+[0.15.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.14.0...v0.15.0
+
+
+### Version 0.14.1-alpha1
+
+#### Changed
+* sort origin options alphabetically, highlight special origin `All` (#211) [5f21a9b](https://github.com/greenbone/opensight-notification-service/commit/5f21a9b)
+
+#### Dependencies
+* bump codecov/codecov-action in the github-actions group [39d14e7](https://github.com/greenbone/opensight-notification-service/commit/39d14e7)
+
+[0.14.1-alpha1]: https://github.com/greenbone/opensight-notification-service/compare/v0.14.0...v0.14.1-alpha1
+
+
+### Version 0.14.0
+
+#### Added
+* forward notifications based on rules (#206) [5221006](https://github.com/greenbone/opensight-notification-service/commit/5221006)
+
+#### Bug Fixes
+* only notification role can create notifications (#203) [76eb32e](https://github.com/greenbone/opensight-notification-service/commit/76eb32e)
+
+[0.14.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.13.0...v0.14.0
+
+
+### Version 0.13.1-alpha1
+
+#### Added
+* forward notifications based on rules (#206) [5221006](https://github.com/greenbone/opensight-notification-service/commit/5221006)
+
+#### Bug Fixes
+* only notification role can create notifications (#203) [76eb32e](https://github.com/greenbone/opensight-notification-service/commit/76eb32e)
+
+[0.13.1-alpha1]: https://github.com/greenbone/opensight-notification-service/compare/v0.13.0...v0.13.1-alpha1
+
+
+### Version 0.13.0
+
+#### Added
+* Endpoint for ruleOptions [aff8958](https://github.com/greenbone/opensight-notification-service/commit/aff8958)
+* add alert `rules` CRUD endpoints (#194) [7528be9](https://github.com/greenbone/opensight-notification-service/commit/7528be9)
+
+#### Changed
+* Add list of allowed channel types and validate against it [3b244b1](https://github.com/greenbone/opensight-notification-service/commit/3b244b1)
+* Converted all Levels to notifications.Level [4f61af1](https://github.com/greenbone/opensight-notification-service/commit/4f61af1)
+* use 'enum' for channel type (#198) [c4a38c3](https://github.com/greenbone/opensight-notification-service/commit/c4a38c3)
+* deactivate invalid rules on retrieval (#197) [9e7c7ff](https://github.com/greenbone/opensight-notification-service/commit/9e7c7ff)
+
+[0.13.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.12.0...v0.13.0
+
+
+### Version 0.12.1-alpha4
+
+#### Added
+* Endpoint for ruleOptions [aff8958](https://github.com/greenbone/opensight-notification-service/commit/aff8958)
+
+#### Changed
+
+* Add list of allowed channel types and validate against it [3b244b1](https://github.com/greenbone/opensight-notification-service/commit/3b244b1)
+* Converted all Levels to notifications.Level [4f61af1](https://github.com/greenbone/opensight-notification-service/commit/4f61af1)
+* use 'enum' for channel type (#198) [c4a38c3](https://github.com/greenbone/opensight-notification-service/commit/c4a38c3)
+
+[0.12.1-alpha4]: https://github.com/greenbone/opensight-notification-service/compare/v0.12.1-alpha3...v0.12.1-alpha4
+
+
+### Version 0.12.1-alpha3
+
+#### Changed
+* deactivate invalid rules on retrieval (#197) [9e7c7ff](https://github.com/greenbone/opensight-notification-service/commit/9e7c7ff)
+
+[0.12.1-alpha3]: https://github.com/greenbone/opensight-notification-service/compare/v0.12.1-alpha2...v0.12.1-alpha3
+
+
+### Version 0.12.1-alpha2
+
+#### Added
+* add alert `rules` CRUD endpoints (#194) [7528be9](https://github.com/greenbone/opensight-notification-service/commit/7528be9)
+
+[0.12.1-alpha2]: https://github.com/greenbone/opensight-notification-service/compare/v0.12.1-alpha1...v0.12.1-alpha2
+
+
+### Version 0.12.1-alpha1
+
+[0.12.1-alpha1]: https://github.com/greenbone/opensight-notification-service/compare/v0.12.0...v0.12.1-alpha1
+
+
+### Version 0.12.0
+
+#### Added
+* add register origins endpoint [03672d3](https://github.com/greenbone/opensight-notification-service/commit/03672d3)
+* `.idea/` to git ignore (#155) [08d489a](https://github.com/greenbone/opensight-notification-service/commit/08d489a)
+* `.idea/` to git ignore [ef53210](https://github.com/greenbone/opensight-notification-service/commit/ef53210)
+
+#### Changed
+* split `originUri` into `originClass` and `originResourceID` [a2100ff](https://github.com/greenbone/opensight-notification-service/commit/a2100ff)
+* [VTI-778] Reuse sqlx connection for psql autoMigrate (#186) [6fbc177](https://github.com/greenbone/opensight-notification-service/commit/6fbc177)
+* [VTI-778] Reuse sqlx connection for psql autoMigrate [dbdd1e9](https://github.com/greenbone/opensight-notification-service/commit/dbdd1e9)
+
+#### Bug Fixes
+* translations for Mattermost (#184) [389b3a7](https://github.com/greenbone/opensight-notification-service/commit/389b3a7)
+* translations for Mattermost [ffffb08](https://github.com/greenbone/opensight-notification-service/commit/ffffb08)
+
+[0.12.0]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.0...v0.12.0
+
+
+### Version 0.11.1-alpha17
+
+[0.11.1-alpha17]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha16...v0.11.1-alpha17
+
+
+### Version 0.11.1-alpha16
+
+#### Added
+* add register origins endpoint [03672d3](https://github.com/greenbone/opensight-notification-service/commit/03672d3)
+
+#### Changed
+* split `originUri` into `originClass` and `originResourceID` [a2100ff](https://github.com/greenbone/opensight-notification-service/commit/a2100ff)
+
+[0.11.1-alpha16]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha15...v0.11.1-alpha16
+
+
+### Version 0.11.1-alpha15
+
+[0.11.1-alpha15]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha14...v0.11.1-alpha15
+
+
+### Version 0.11.1-alpha14
+
+#### Changed
+* [VTI-778] Reuse sqlx connection for psql autoMigrate (#186) [6fbc177](https://github.com/greenbone/opensight-notification-service/commit/6fbc177)
+* [VTI-778] Reuse sqlx connection for psql autoMigrate [dbdd1e9](https://github.com/greenbone/opensight-notification-service/commit/dbdd1e9)
+
+[0.11.1-alpha14]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha13...v0.11.1-alpha14
+
+
+### Version 0.11.1-alpha13
+
+#### Bug Fixes
+* translations for Mattermost (#184) [389b3a7](https://github.com/greenbone/opensight-notification-service/commit/389b3a7)
+* translations for Mattermost [ffffb08](https://github.com/greenbone/opensight-notification-service/commit/ffffb08)
+
+[0.11.1-alpha13]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha12...v0.11.1-alpha13
+
+
+### Version 0.11.1-alpha12
+
+[0.11.1-alpha12]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha11...v0.11.1-alpha12
+
+
+### Version 0.11.1-alpha11
+
+[0.11.1-alpha11]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha10...v0.11.1-alpha11
+
+
+### Version 0.11.1-alpha10
+
+[0.11.1-alpha10]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha9...v0.11.1-alpha10
+
+
+### Version 0.11.1-alpha9
+
+[0.11.1-alpha9]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha8...v0.11.1-alpha9
+
+
+### Version 0.11.1-alpha8
+
+[0.11.1-alpha8]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha7...v0.11.1-alpha8
+
+
+### Version 0.11.1-alpha7
+
+[0.11.1-alpha7]: https://github.com/greenbone/opensight-notification-service/compare/v0.11.1-alpha6...v0.11.1-alpha7
+
+
+## greenbone/opensight-notification-frontend
+
+### Version 1.15.0
+
+#### Added
+* code cov workflow (#304) [902ce53](https://github.com/greenbone/opensight-notification-frontend/commit/902ce53)
+
+[1.15.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.14.0...v1.15.0
+
+
+### Version 1.14.0
+
+#### Added
+* Translation for side menu nav - About (#298) [1dd0c34](https://github.com/greenbone/opensight-notification-frontend/commit/1dd0c34)
+* EUVD Advisories Menu point (#291) [ba7cda6](https://github.com/greenbone/opensight-notification-frontend/commit/ba7cda6)
+* about us page [d9b384e](https://github.com/greenbone/opensight-notification-frontend/commit/d9b384e)
+
+#### Changed
+* remove not needed code [241fb74](https://github.com/greenbone/opensight-notification-frontend/commit/241fb74)
+* md padding bottom below headers [47a3b59](https://github.com/greenbone/opensight-notification-frontend/commit/47a3b59)
+* remove margin bottom below headers [8e42758](https://github.com/greenbone/opensight-notification-frontend/commit/8e42758)
+* remove border bottom below headers [49ed34f](https://github.com/greenbone/opensight-notification-frontend/commit/49ed34f)
+* fix vulnerability [5c8af08](https://github.com/greenbone/opensight-notification-frontend/commit/5c8af08)
+* fix lint [53c6da9](https://github.com/greenbone/opensight-notification-frontend/commit/53c6da9)
+* remove sidenav test - nothing to test [d53f50e](https://github.com/greenbone/opensight-notification-frontend/commit/d53f50e)
+* remove versions from side nav [f75ae24](https://github.com/greenbone/opensight-notification-frontend/commit/f75ae24)
+* add about us page test [df39b6f](https://github.com/greenbone/opensight-notification-frontend/commit/df39b6f)
+* add about us page test [e89434c](https://github.com/greenbone/opensight-notification-frontend/commit/e89434c)
+* add default version [1a69ab5](https://github.com/greenbone/opensight-notification-frontend/commit/1a69ab5)
+* remove not needed mocks [362f1f6](https://github.com/greenbone/opensight-notification-frontend/commit/362f1f6)
+* update package json [354210f](https://github.com/greenbone/opensight-notification-frontend/commit/354210f)
+* refactor code [c4df1eb](https://github.com/greenbone/opensight-notification-frontend/commit/c4df1eb)
+* update design [9275ca6](https://github.com/greenbone/opensight-notification-frontend/commit/9275ca6)
+* update design [6da23a2](https://github.com/greenbone/opensight-notification-frontend/commit/6da23a2)
+* lint changes [0e6f458](https://github.com/greenbone/opensight-notification-frontend/commit/0e6f458)
+* set osiProductVersion as default undefined [76b2b8b](https://github.com/greenbone/opensight-notification-frontend/commit/76b2b8b)
+* improvements to about us page [820815e](https://github.com/greenbone/opensight-notification-frontend/commit/820815e)
+* improvements to about us page [39bb47c](https://github.com/greenbone/opensight-notification-frontend/commit/39bb47c)
+* improvements to about us page [6e68e4e](https://github.com/greenbone/opensight-notification-frontend/commit/6e68e4e)
+* fix lint [67a4fee](https://github.com/greenbone/opensight-notification-frontend/commit/67a4fee)
+* fix unit tests [ecc32f8](https://github.com/greenbone/opensight-notification-frontend/commit/ecc32f8)
+* update ui-lib [0d0aace](https://github.com/greenbone/opensight-notification-frontend/commit/0d0aace)
+* remove backend mock service from handlers [802b0e9](https://github.com/greenbone/opensight-notification-frontend/commit/802b0e9)
+* update ui-lib [c2d7957](https://github.com/greenbone/opensight-notification-frontend/commit/c2d7957)
+* remove version info from side nav [f2c209f](https://github.com/greenbone/opensight-notification-frontend/commit/f2c209f)
+* make about us page UX better and add translations [fc653e4](https://github.com/greenbone/opensight-notification-frontend/commit/fc653e4)
+
+#### Bug Fixes
+* Alerts with deleted channel not highlighted (#301) [53c5f4c](https://github.com/greenbone/opensight-notification-frontend/commit/53c5f4c)
+* AlertRuleOptions refetch (#300) [673eceb](https://github.com/greenbone/opensight-notification-frontend/commit/673eceb)
+* update alert settings when communication changed (#299) [ac386a9](https://github.com/greenbone/opensight-notification-frontend/commit/ac386a9)
+
+[1.14.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.0...v1.14.0
+
+
+### Version 1.13.1-alpha7
+
+#### Bug Fixes
+* Alerts with deleted channel not highlighted (#301) [53c5f4c](https://github.com/greenbone/opensight-notification-frontend/commit/53c5f4c)
+
+[1.13.1-alpha7]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.1-alpha6...v1.13.1-alpha7
+
+
+### Version 1.13.1-alpha6
+
+#### Bug Fixes
+* AlertRuleOptions refetch (#300) [673eceb](https://github.com/greenbone/opensight-notification-frontend/commit/673eceb)
+
+[1.13.1-alpha6]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.1-alpha5...v1.13.1-alpha6
+
+
+### Version 1.13.1-alpha5
+
+#### Bug Fixes
+* update alert settings when communication changed (#299) [ac386a9](https://github.com/greenbone/opensight-notification-frontend/commit/ac386a9)
+
+[1.13.1-alpha5]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.1-alpha4...v1.13.1-alpha5
+
+
+### Version 1.13.1-alpha4
+
+#### Added
+* Translation for side menu nav - About (#298) [1dd0c34](https://github.com/greenbone/opensight-notification-frontend/commit/1dd0c34)
+
+[1.13.1-alpha4]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.1-alpha3...v1.13.1-alpha4
+
+
+### Version 1.13.1-alpha3
+
+[1.13.1-alpha3]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.1-alpha2...v1.13.1-alpha3
+
+
+### Version 1.13.1-alpha2
+
+#### Added
+* about us page [d9b384e](https://github.com/greenbone/opensight-notification-frontend/commit/d9b384e)
+
+#### Changed
+* remove not needed code [241fb74](https://github.com/greenbone/opensight-notification-frontend/commit/241fb74)
+* md padding bottom below headers [47a3b59](https://github.com/greenbone/opensight-notification-frontend/commit/47a3b59)
+* remove margin bottom below headers [8e42758](https://github.com/greenbone/opensight-notification-frontend/commit/8e42758)
+* remove border bottom below headers [49ed34f](https://github.com/greenbone/opensight-notification-frontend/commit/49ed34f)
+* fix vulnerability [5c8af08](https://github.com/greenbone/opensight-notification-frontend/commit/5c8af08)
+* fix lint [53c6da9](https://github.com/greenbone/opensight-notification-frontend/commit/53c6da9)
+* remove sidenav test - nothing to test [d53f50e](https://github.com/greenbone/opensight-notification-frontend/commit/d53f50e)
+* remove versions from side nav [f75ae24](https://github.com/greenbone/opensight-notification-frontend/commit/f75ae24)
+* add about us page test [df39b6f](https://github.com/greenbone/opensight-notification-frontend/commit/df39b6f)
+* add about us page test [e89434c](https://github.com/greenbone/opensight-notification-frontend/commit/e89434c)
+* add default version [1a69ab5](https://github.com/greenbone/opensight-notification-frontend/commit/1a69ab5)
+* remove not needed mocks [362f1f6](https://github.com/greenbone/opensight-notification-frontend/commit/362f1f6)
+* update package json [354210f](https://github.com/greenbone/opensight-notification-frontend/commit/354210f)
+* refactor code [c4df1eb](https://github.com/greenbone/opensight-notification-frontend/commit/c4df1eb)
+* update design [9275ca6](https://github.com/greenbone/opensight-notification-frontend/commit/9275ca6)
+* update design [6da23a2](https://github.com/greenbone/opensight-notification-frontend/commit/6da23a2)
+* lint changes [0e6f458](https://github.com/greenbone/opensight-notification-frontend/commit/0e6f458)
+* set osiProductVersion as default undefined [76b2b8b](https://github.com/greenbone/opensight-notification-frontend/commit/76b2b8b)
+* improvements to about us page [820815e](https://github.com/greenbone/opensight-notification-frontend/commit/820815e)
+* improvements to about us page [39bb47c](https://github.com/greenbone/opensight-notification-frontend/commit/39bb47c)
+* improvements to about us page [6e68e4e](https://github.com/greenbone/opensight-notification-frontend/commit/6e68e4e)
+* fix lint [67a4fee](https://github.com/greenbone/opensight-notification-frontend/commit/67a4fee)
+* fix unit tests [ecc32f8](https://github.com/greenbone/opensight-notification-frontend/commit/ecc32f8)
+* update ui-lib [0d0aace](https://github.com/greenbone/opensight-notification-frontend/commit/0d0aace)
+* remove backend mock service from handlers [802b0e9](https://github.com/greenbone/opensight-notification-frontend/commit/802b0e9)
+* update ui-lib [c2d7957](https://github.com/greenbone/opensight-notification-frontend/commit/c2d7957)
+* remove version info from side nav [f2c209f](https://github.com/greenbone/opensight-notification-frontend/commit/f2c209f)
+* make about us page UX better and add translations [fc653e4](https://github.com/greenbone/opensight-notification-frontend/commit/fc653e4)
+
+[1.13.1-alpha2]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.1-alpha1...v1.13.1-alpha2
+
+
+### Version 1.13.1-alpha1
+
+#### Added
+* EUVD Advisories Menu point (#291) [ba7cda6](https://github.com/greenbone/opensight-notification-frontend/commit/ba7cda6)
+
+[1.13.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.13.0...v1.13.1-alpha1
+
+
+### Version 1.13.0
+
+[1.13.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.12.0...v1.13.0
+
+
+### Version 1.12.1-alpha1
+
+[1.12.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.12.0...v1.12.1-alpha1
+
+
+### Version 1.12.0
+
+[1.12.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.11.0...v1.12.0
+
+
+### Version 1.11.0
+
+#### Added
+* fix resetSession to avoid race condition with logout [f615dab](https://github.com/greenbone/opensight-notification-frontend/commit/f615dab)
+
+#### Bug Fixes
+* date now to seconds (#287) [25f24d0](https://github.com/greenbone/opensight-notification-frontend/commit/25f24d0)
+
+[1.11.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.10.0...v1.11.0
+
+
+### Version 1.10.1-alpha2
+
+#### Bug Fixes
+* date now to seconds (#287) [25f24d0](https://github.com/greenbone/opensight-notification-frontend/commit/25f24d0)
+
+[1.10.1-alpha2]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.10.1-alpha1...v1.10.1-alpha2
+
+
+### Version 1.10.1-alpha1
+
+#### Added
+* fix resetSession to avoid race condition with logout [f615dab](https://github.com/greenbone/opensight-notification-frontend/commit/f615dab)
+
+[1.10.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.10.0...v1.10.1-alpha1
+
+
+### Version 1.10.0
+
+#### Added
+* use new DataTable for notification list page (#283) [0c13300](https://github.com/greenbone/opensight-notification-frontend/commit/0c13300)
+* updated mattermost tooltip text [1cba21f](https://github.com/greenbone/opensight-notification-frontend/commit/1cba21f)
+
+#### Changed
+* use ui-lib version 2.12.0 (#285) [f28460b](https://github.com/greenbone/opensight-notification-frontend/commit/f28460b)
+* use ui-lib 2.11.0 (#284) [f06e6ee](https://github.com/greenbone/opensight-notification-frontend/commit/f06e6ee)
+
+[1.10.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.9.0...v1.10.0
+
+
+### Version 1.9.1-alpha3
+
+#### Changed
+* use ui-lib 2.11.0 (#284) [f06e6ee](https://github.com/greenbone/opensight-notification-frontend/commit/f06e6ee)
+
+[1.9.1-alpha3]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.9.1-alpha2...v1.9.1-alpha3
+
+
+### Version 1.9.1-alpha2
+
+#### Added
+* use new DataTable for notification list page (#283) [0c13300](https://github.com/greenbone/opensight-notification-frontend/commit/0c13300)
+
+[1.9.1-alpha2]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.9.1-alpha1...v1.9.1-alpha2
+
+
+### Version 1.9.1-alpha1
+
+#### Added
+* updated mattermost tooltip text [1cba21f](https://github.com/greenbone/opensight-notification-frontend/commit/1cba21f)
+
+[1.9.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.9.0...v1.9.1-alpha1
+
+
+### Version 1.9.0
+
+#### Added
+* permission handling (#265) [d9198f4](https://github.com/greenbone/opensight-notification-frontend/commit/d9198f4)
+
+#### Changed
+* increase table  width (#267) [8cbde6e](https://github.com/greenbone/opensight-notification-frontend/commit/8cbde6e)
+* Reset changes, only replace _kc.token in getLifetimeInSeconds [6d15b19](https://github.com/greenbone/opensight-notification-frontend/commit/6d15b19)
+* Replace all _kc.token with _kc.refreshToken [9de0541](https://github.com/greenbone/opensight-notification-frontend/commit/9de0541)
+* [ARTOSI-308] Use refreshToken instead of access token [f59601d](https://github.com/greenbone/opensight-notification-frontend/commit/f59601d)
+
+[1.9.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.8.0...v1.9.0
+
+
+### Version 1.8.1-alpha3
+
+#### Changed
+* increase table  width (#267) [8cbde6e](https://github.com/greenbone/opensight-notification-frontend/commit/8cbde6e)
+
+[1.8.1-alpha3]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.8.1-alpha2...v1.8.1-alpha3
+
+
+### Version 1.8.1-alpha2
+
+#### Added
+* permission handling (#265) [d9198f4](https://github.com/greenbone/opensight-notification-frontend/commit/d9198f4)
+
+[1.8.1-alpha2]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.8.1-alpha1...v1.8.1-alpha2
+
+
+### Version 1.8.1-alpha1
+
+#### Changed
+* Reset changes, only replace _kc.token in getLifetimeInSeconds [6d15b19](https://github.com/greenbone/opensight-notification-frontend/commit/6d15b19)
+* Replace all _kc.token with _kc.refreshToken [9de0541](https://github.com/greenbone/opensight-notification-frontend/commit/9de0541)
+* [ARTOSI-308] Use refreshToken instead of access token [f59601d](https://github.com/greenbone/opensight-notification-frontend/commit/f59601d)
+
+[1.8.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.8.0...v1.8.1-alpha1
+
+
+### Version 1.8.0
+
+[1.8.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.7.0...v1.8.0
+
+
+### Version 1.7.0
+
+#### Changed
+* menu points (#253) [4e999bc](https://github.com/greenbone/opensight-notification-frontend/commit/4e999bc)
+
+#### Bug Fixes
+* Alert setting page title [2f0ff8e](https://github.com/greenbone/opensight-notification-frontend/commit/2f0ff8e)
+
+[1.7.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.6.0...v1.7.0
+
+
+### Version 1.6.1-alpha1
+
+#### Bug Fixes
+* Alert setting page title [2f0ff8e](https://github.com/greenbone/opensight-notification-frontend/commit/2f0ff8e)
+
+[1.6.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.6.0...v1.6.1-alpha1
+
+
+### Version 1.6.0
+
+[1.6.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.5.0...v1.6.0
+
+
+### Version 1.5.1-alpha1
+
+[1.5.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.5.0...v1.5.1-alpha1
+
+
+### Version 1.5.0
+
+#### Changed
+* adapt to new side menu (#228) [f73682a](https://github.com/greenbone/opensight-notification-frontend/commit/f73682a)
+
+[1.5.0]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.4.0...v1.5.0
+
+
+### Version 1.4.1-alpha1
+
+#### Changed
+* adapt to new side menu (#228) [f73682a](https://github.com/greenbone/opensight-notification-frontend/commit/f73682a)
+
+[1.4.1-alpha1]: https://github.com/greenbone/opensight-notification-frontend/compare/v1.4.0...v1.4.1-alpha1
+
+
+
+## Fixed CVEs
+
+### opensight-ingress.v1.32.0
+
+- CVE-2011-3374 (apt 3.0.3, LOW)
+- TEMP-0841856-B18BAF (bash 5.2.37-2+b9, LOW)
+- CVE-2022-0563 (bsdutils 1:2.41-5, LOW)
+- CVE-2025-14104 (bsdutils 1:2.41-5, LOW)
+- CVE-2026-13595 (bsdutils 1:2.41-5, MEDIUM)
+- CVE-2026-27456 (bsdutils 1:2.41-5, MEDIUM)
+- CVE-2026-3184 (bsdutils 1:2.41-5, MEDIUM)
+- CVE-2026-53612 (bsdutils 1:2.41-5, HIGH)
+- CVE-2026-53613 (bsdutils 1:2.41-5, HIGH)
+- CVE-2026-53614 (bsdutils 1:2.41-5, HIGH)
+- CVE-2026-53615 (bsdutils 1:2.41-5, HIGH)
+- CVE-2017-18018 (coreutils 9.7-3, LOW)
+- CVE-2025-5278 (coreutils 9.7-3, LOW)
+- CVE-2026-56391 (coreutils 9.7-3, LOW)
+- CVE-2026-56392 (coreutils 9.7-3, LOW)
+- CVE-2025-10966 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2025-14017 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2025-14524 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2025-14819 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2025-15079 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2025-15224 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2026-10536 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-11856 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-12064 (curl 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-1965 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-3783 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-3784 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-3805 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-4873 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-5545 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-5773 (curl 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-6253 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-6276 (curl 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-6429 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-7168 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-8286 (curl 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-8458 (curl 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-8924 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-8926 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-8927 (curl 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-8932 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9079 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9080 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9545 (curl 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9547 (curl 8.14.1-2+deb13u3, LOW)
+- CVE-2026-53910 (diffutils 1:3.10-4, LOW)
+- CVE-2026-41991 (gzip 1.13-1, MEDIUM)
+- CVE-2026-41992 (gzip 1.13-1, HIGH)
+- CVE-2026-54369 (libacl1 2.3.2-2+b1, HIGH)
+- CVE-2026-54370 (libacl1 2.3.2-2+b1, MEDIUM)
+- CVE-2026-56208 (libaom3 3.12.1-1, HIGH)
+- CVE-2026-56209 (libaom3 3.12.1-1, HIGH)
+- CVE-2026-56210 (libaom3 3.12.1-1, HIGH)
+- CVE-2026-56211 (libaom3 3.12.1-1, HIGH)
+- CVE-2011-3374 (libapt-pkg7.0 3.0.3, LOW)
+- CVE-2026-54371 (libattr1 1:2.5.2-3, MEDIUM)
+- CVE-2022-0563 (libblkid1 2.41-5, LOW)
+- CVE-2025-14104 (libblkid1 2.41-5, LOW)
+- CVE-2026-13595 (libblkid1 2.41-5, MEDIUM)
+- CVE-2026-27456 (libblkid1 2.41-5, MEDIUM)
+- CVE-2026-3184 (libblkid1 2.41-5, MEDIUM)
+- CVE-2026-53612 (libblkid1 2.41-5, HIGH)
+- CVE-2026-53613 (libblkid1 2.41-5, HIGH)
+- CVE-2026-53614 (libblkid1 2.41-5, HIGH)
+- CVE-2026-53615 (libblkid1 2.41-5, HIGH)
+- CVE-2026-42250 (libbz2-1.0 1.0.8-6, MEDIUM)
+- CVE-2010-4756 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2018-20796 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2019-1010022 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2019-1010023 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2019-1010024 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2019-1010025 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2019-9192 (libc-bin 2.41-12+deb13u3, LOW)
+- CVE-2026-19542 (libc-bin 2.41-12+deb13u3, UNKNOWN)
+- CVE-2026-5435 (libc-bin 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-5450 (libc-bin 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-5928 (libc-bin 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-6238 (libc-bin 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-6368 (libc-bin 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-6791 (libc-bin 2.41-12+deb13u3, MEDIUM)
+- CVE-2010-4756 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2018-20796 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2019-1010022 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2019-1010023 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2019-1010024 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2019-1010025 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2019-9192 (libc6 2.41-12+deb13u3, LOW)
+- CVE-2026-19542 (libc6 2.41-12+deb13u3, UNKNOWN)
+- CVE-2026-5435 (libc6 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-5450 (libc6 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-5928 (libc6 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-6238 (libc6 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-6368 (libc6 2.41-12+deb13u3, MEDIUM)
+- CVE-2026-6791 (libc6 2.41-12+deb13u3, MEDIUM)
+- CVE-2025-10966 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2025-14017 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2025-14524 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2025-14819 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2025-15079 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2025-15224 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2026-10536 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-11856 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-12064 (libcurl4t64 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-1965 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-3783 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-3784 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-3805 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-4873 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-5545 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-5773 (libcurl4t64 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-6253 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-6276 (libcurl4t64 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-6429 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-7168 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-8286 (libcurl4t64 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-8458 (libcurl4t64 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-8924 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-8926 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-8927 (libcurl4t64 8.14.1-2+deb13u3, HIGH)
+- CVE-2026-8932 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9079 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9080 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9545 (libcurl4t64 8.14.1-2+deb13u3, MEDIUM)
+- CVE-2026-9547 (libcurl4t64 8.14.1-2+deb13u3, LOW)
+- CVE-2024-38949 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2024-38950 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2025-61147 (libde265-0 1.0.15-1+b3, LOW)
+- CVE-2026-33164 (libde265-0 1.0.15-1+b3, HIGH)
+- CVE-2026-33165 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-45382 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-45383 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-49295 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-49337 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-49346 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-54240 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2026-54241 (libde265-0 1.0.15-1+b3, MEDIUM)
+- CVE-2025-59375 (libexpat1 2.7.1-2, HIGH)
+- CVE-2025-66382 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-24515 (libexpat1 2.7.1-2, LOW)
+- CVE-2026-25210 (libexpat1 2.7.1-2, HIGH)
+- CVE-2026-32776 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-32777 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-32778 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-41080 (libexpat1 2.7.1-2, LOW)
+- CVE-2026-45186 (libexpat1 2.7.1-2, HIGH)
+- CVE-2026-50219 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56131 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56132 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56403 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56404 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56405 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56406 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56407 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56408 (libexpat1 2.7.1-2, HIGH)
+- CVE-2026-56409 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56410 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56411 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-56412 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-66046 (libexpat1 2.7.1-2, UNKNOWN)
+- CVE-2026-72522 (libexpat1 2.7.1-2, MEDIUM)
+- CVE-2026-76956 (libexpat1 2.7.1-2, UNKNOWN)
+- CVE-2026-76957 (libexpat1 2.7.1-2, UNKNOWN)
+- CVE-2018-6829 (libgcrypt20 1.11.0-7+deb13u1, LOW)
+- CVE-2024-2236 (libgcrypt20 1.11.0-7+deb13u1, LOW)
+- CVE-2026-9672 (libgd3 2.3.3-13, UNKNOWN)
+- CVE-2011-3389 (libgnutls30t64 3.8.9-3+deb13u4, LOW)
+- CVE-2018-5709 (libgssapi-krb5-2 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26458 (libgssapi-krb5-2 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26461 (libgssapi-krb5-2 1.21.3-5+deb13u1, LOW)
+- CVE-2026-11850 (libgssapi-krb5-2 1.21.3-5+deb13u1, LOW)
+- CVE-2025-68431 (libheif-plugin-dav1d 1.19.8-1, HIGH)
+- CVE-2026-32740 (libheif-plugin-dav1d 1.19.8-1, HIGH)
+- CVE-2026-32741 (libheif-plugin-dav1d 1.19.8-1, HIGH)
+- CVE-2026-32882 (libheif-plugin-dav1d 1.19.8-1, HIGH)
+- CVE-2026-3949 (libheif-plugin-dav1d 1.19.8-1, LOW)
+- CVE-2026-47178 (libheif-plugin-dav1d 1.19.8-1, HIGH)
+- CVE-2026-47247 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-47709 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-47714 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-48029 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-49271 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-62289 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-62291 (libheif-plugin-dav1d 1.19.8-1, UNKNOWN)
+- CVE-2026-62292 (libheif-plugin-dav1d 1.19.8-1, MEDIUM)
+- CVE-2026-62377 (libheif-plugin-dav1d 1.19.8-1, UNKNOWN)
+- CVE-2025-68431 (libheif-plugin-libde265 1.19.8-1, HIGH)
+- CVE-2026-32740 (libheif-plugin-libde265 1.19.8-1, HIGH)
+- CVE-2026-32741 (libheif-plugin-libde265 1.19.8-1, HIGH)
+- CVE-2026-32882 (libheif-plugin-libde265 1.19.8-1, HIGH)
+- CVE-2026-3949 (libheif-plugin-libde265 1.19.8-1, LOW)
+- CVE-2026-47178 (libheif-plugin-libde265 1.19.8-1, HIGH)
+- CVE-2026-47247 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-47709 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-47714 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-48029 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-49271 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-62289 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-62291 (libheif-plugin-libde265 1.19.8-1, UNKNOWN)
+- CVE-2026-62292 (libheif-plugin-libde265 1.19.8-1, MEDIUM)
+- CVE-2026-62377 (libheif-plugin-libde265 1.19.8-1, UNKNOWN)
+- CVE-2025-68431 (libheif1 1.19.8-1, HIGH)
+- CVE-2026-32740 (libheif1 1.19.8-1, HIGH)
+- CVE-2026-32741 (libheif1 1.19.8-1, HIGH)
+- CVE-2026-32882 (libheif1 1.19.8-1, HIGH)
+- CVE-2026-3949 (libheif1 1.19.8-1, LOW)
+- CVE-2026-47178 (libheif1 1.19.8-1, HIGH)
+- CVE-2026-47247 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-47709 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-47714 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-48029 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-49271 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-62289 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-62291 (libheif1 1.19.8-1, UNKNOWN)
+- CVE-2026-62292 (libheif1 1.19.8-1, MEDIUM)
+- CVE-2026-62377 (libheif1 1.19.8-1, UNKNOWN)
+- CVE-2017-9937 (libjbig0 2.1-6.1+b2, LOW)
+- CVE-2018-5709 (libk5crypto3 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26458 (libk5crypto3 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26461 (libk5crypto3 1.21.3-5+deb13u1, LOW)
+- CVE-2026-11850 (libk5crypto3 1.21.3-5+deb13u1, LOW)
+- CVE-2018-5709 (libkrb5-3 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26458 (libkrb5-3 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26461 (libkrb5-3 1.21.3-5+deb13u1, LOW)
+- CVE-2026-11850 (libkrb5-3 1.21.3-5+deb13u1, LOW)
+- CVE-2018-5709 (libkrb5support0 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26458 (libkrb5support0 1.21.3-5+deb13u1, LOW)
+- CVE-2024-26461 (libkrb5support0 1.21.3-5+deb13u1, LOW)
+- CVE-2026-11850 (libkrb5support0 1.21.3-5+deb13u1, LOW)
+- CVE-2022-0563 (liblastlog2-2 2.41-5, LOW)
+- CVE-2025-14104 (liblastlog2-2 2.41-5, LOW)
+- CVE-2026-13595 (liblastlog2-2 2.41-5, MEDIUM)
+- CVE-2026-27456 (liblastlog2-2 2.41-5, MEDIUM)
+- CVE-2026-3184 (liblastlog2-2 2.41-5, MEDIUM)
+- CVE-2026-53612 (liblastlog2-2 2.41-5, HIGH)
+- CVE-2026-53613 (liblastlog2-2 2.41-5, HIGH)
+- CVE-2026-53614 (liblastlog2-2 2.41-5, HIGH)
+- CVE-2026-53615 (liblastlog2-2 2.41-5, HIGH)
+- CVE-2015-3276 (libldap2 2.6.10+dfsg-1, LOW)
+- CVE-2017-14159 (libldap2 2.6.10+dfsg-1, LOW)
+- CVE-2017-17740 (libldap2 2.6.10+dfsg-1, LOW)
+- CVE-2020-15719 (libldap2 2.6.10+dfsg-1, LOW)
+- CVE-2026-22185 (libldap2 2.6.10+dfsg-1, LOW)
+- CVE-2026-34743 (liblzma5 5.8.1-1, MEDIUM)
+- CVE-2022-0563 (libmount1 2.41-5, LOW)
+- CVE-2025-14104 (libmount1 2.41-5, LOW)
+- CVE-2026-13595 (libmount1 2.41-5, MEDIUM)
+- CVE-2026-27456 (libmount1 2.41-5, MEDIUM)
+- CVE-2026-3184 (libmount1 2.41-5, MEDIUM)
+- CVE-2026-53612 (libmount1 2.41-5, HIGH)
+- CVE-2026-53613 (libmount1 2.41-5, HIGH)
+- CVE-2026-53614 (libmount1 2.41-5, HIGH)
+- CVE-2026-53615 (libmount1 2.41-5, HIGH)
+- CVE-2026-58055 (libnghttp2-14 1.64.0-1.1+deb13u1, MEDIUM)
+- CVE-2026-13757 (libp11-kit0 0.25.5-3, MEDIUM)
+- CVE-2026-18938 (libp11-kit0 0.25.5-3, MEDIUM)
+- CVE-2026-54411 (libpam-modules-bin 1.7.0-5, MEDIUM)
+- CVE-2026-54411 (libpam-modules 1.7.0-5, MEDIUM)
+- CVE-2026-54411 (libpam-runtime 1.7.0-5, MEDIUM)
+- CVE-2026-54411 (libpam0g 1.7.0-5, MEDIUM)
+- CVE-2021-4214 (libpng16-16t64 1.6.48-1+deb13u5, LOW)
+- CVE-2026-3713 (libpng16-16t64 1.6.48-1+deb13u5, LOW)
+- CVE-2022-0563 (libsmartcols1 2.41-5, LOW)
+- CVE-2025-14104 (libsmartcols1 2.41-5, LOW)
+- CVE-2026-13595 (libsmartcols1 2.41-5, MEDIUM)
+- CVE-2026-27456 (libsmartcols1 2.41-5, MEDIUM)
+- CVE-2026-3184 (libsmartcols1 2.41-5, MEDIUM)
+- CVE-2026-53612 (libsmartcols1 2.41-5, HIGH)
+- CVE-2026-53613 (libsmartcols1 2.41-5, HIGH)
+- CVE-2026-53614 (libsmartcols1 2.41-5, HIGH)
+- CVE-2026-53615 (libsmartcols1 2.41-5, HIGH)
+- CVE-2021-45346 (libsqlite3-0 3.46.1-7+deb13u1, LOW)
+- CVE-2025-70873 (libsqlite3-0 3.46.1-7+deb13u1, LOW)
+- CVE-2026-11822 (libsqlite3-0 3.46.1-7+deb13u1, MEDIUM)
+- CVE-2026-11824 (libsqlite3-0 3.46.1-7+deb13u1, MEDIUM)
+- CVE-2026-50812 (libsqlite3-0 3.46.1-7+deb13u1, MEDIUM)
+- CVE-2026-50813 (libsqlite3-0 3.46.1-7+deb13u1, MEDIUM)
+- CVE-2026-58050 (libssh2-1t64 1.11.1-1+deb13u1, HIGH)
+- CVE-2026-58051 (libssh2-1t64 1.11.1-1+deb13u1, MEDIUM)
+- CVE-2026-66032 (libssh2-1t64 1.11.1-1+deb13u1, MEDIUM)
+- CVE-2026-66033 (libssh2-1t64 1.11.1-1+deb13u1, MEDIUM)
+- CVE-2026-66034 (libssh2-1t64 1.11.1-1+deb13u1, MEDIUM)
+- CVE-2026-66035 (libssh2-1t64 1.11.1-1+deb13u1, MEDIUM)
+- CVE-2026-14456 (libssl3t64 3.5.6-1~deb13u2, HIGH)
+- CVE-2026-75803 (libssl3t64 3.5.6-1~deb13u2, UNKNOWN)
+- CVE-2013-4392 (libsystemd0 257.13-1~deb13u1, LOW)
+- CVE-2023-31437 (libsystemd0 257.13-1~deb13u1, LOW)
+- CVE-2023-31438 (libsystemd0 257.13-1~deb13u1, LOW)
+- CVE-2023-31439 (libsystemd0 257.13-1~deb13u1, LOW)
+- CVE-2026-15059 (libsystemd0 257.13-1~deb13u1, MEDIUM)
+- CVE-2026-16742 (libsystemd0 257.13-1~deb13u1, MEDIUM)
+- CVE-2026-40228 (libsystemd0 257.13-1~deb13u1, LOW)
+- CVE-2025-13151 (libtasn1-6 4.20.0-2, LOW)
+- CVE-2017-16232 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2018-10126 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2022-1210 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2025-61143 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2025-61144 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2025-61145 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2025-8176 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2025-8177 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2025-8534 (libtiff6 4.7.0-3+deb13u2, LOW)
+- CVE-2026-12912 (libtiff6 4.7.0-3+deb13u2, HIGH)
+- CVE-2026-36849 (libtiff6 4.7.0-3+deb13u2, HIGH)
+- CVE-2025-6141 (libtinfo6 6.5+20250216-2, LOW)
+- CVE-2025-69720 (libtinfo6 6.5+20250216-2, HIGH)
+- CVE-2013-4392 (libudev1 257.13-1~deb13u1, LOW)
+- CVE-2023-31437 (libudev1 257.13-1~deb13u1, LOW)
+- CVE-2023-31438 (libudev1 257.13-1~deb13u1, LOW)
+- CVE-2023-31439 (libudev1 257.13-1~deb13u1, LOW)
+- CVE-2026-15059 (libudev1 257.13-1~deb13u1, MEDIUM)
+- CVE-2026-16742 (libudev1 257.13-1~deb13u1, MEDIUM)
+- CVE-2026-40228 (libudev1 257.13-1~deb13u1, LOW)
+- CVE-2022-0563 (libuuid1 2.41-5, LOW)
+- CVE-2025-14104 (libuuid1 2.41-5, LOW)
+- CVE-2026-13595 (libuuid1 2.41-5, MEDIUM)
+- CVE-2026-27456 (libuuid1 2.41-5, MEDIUM)
+- CVE-2026-3184 (libuuid1 2.41-5, MEDIUM)
+- CVE-2026-53612 (libuuid1 2.41-5, HIGH)
+- CVE-2026-53613 (libuuid1 2.41-5, HIGH)
+- CVE-2026-53614 (libuuid1 2.41-5, HIGH)
+- CVE-2026-53615 (libuuid1 2.41-5, HIGH)
+- CVE-2025-8732 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, LOW)
+- CVE-2026-0989 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, LOW)
+- CVE-2026-0990 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, MEDIUM)
+- CVE-2026-0992 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, LOW)
+- CVE-2026-11979 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, LOW)
+- CVE-2026-1757 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, LOW)
+- CVE-2026-6653 (libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u2, CRITICAL)
+- CVE-2026-4367 (libxpm4 1:3.5.17-1+b3, MEDIUM)
+- CVE-2015-9019 (libxslt1.1 1.1.35-1.2+deb13u3, LOW)
+- CVE-2025-10911 (libxslt1.1 1.1.35-1.2+deb13u3, MEDIUM)
+- CVE-2025-11731 (libxslt1.1 1.1.35-1.2+deb13u3, LOW)
+- CVE-2007-5686 (login.defs 1:4.17.4-2, LOW)
+- CVE-2024-56433 (login.defs 1:4.17.4-2, LOW)
+- TEMP-0628843-DBAD28 (login.defs 1:4.17.4-2, LOW)
+- CVE-2022-0563 (login 1:4.16.0-2+really2.41-5, LOW)
+- CVE-2025-14104 (login 1:4.16.0-2+really2.41-5, LOW)
+- CVE-2026-13595 (login 1:4.16.0-2+really2.41-5, MEDIUM)
+- CVE-2026-27456 (login 1:4.16.0-2+really2.41-5, MEDIUM)
+- CVE-2026-3184 (login 1:4.16.0-2+really2.41-5, MEDIUM)
+- CVE-2026-53612 (login 1:4.16.0-2+really2.41-5, HIGH)
+- CVE-2026-53613 (login 1:4.16.0-2+really2.41-5, HIGH)
+- CVE-2026-53614 (login 1:4.16.0-2+really2.41-5, HIGH)
+- CVE-2026-53615 (login 1:4.16.0-2+really2.41-5, HIGH)
+- CVE-2022-0563 (mount 2.41-5, LOW)
+- CVE-2025-14104 (mount 2.41-5, LOW)
+- CVE-2026-13595 (mount 2.41-5, MEDIUM)
+- CVE-2026-27456 (mount 2.41-5, MEDIUM)
+- CVE-2026-3184 (mount 2.41-5, MEDIUM)
+- CVE-2026-53612 (mount 2.41-5, HIGH)
+- CVE-2026-53613 (mount 2.41-5, HIGH)
+- CVE-2026-53614 (mount 2.41-5, HIGH)
+- CVE-2026-53615 (mount 2.41-5, HIGH)
+- CVE-2025-6141 (ncurses-base 6.5+20250216-2, LOW)
+- CVE-2025-69720 (ncurses-base 6.5+20250216-2, HIGH)
+- CVE-2025-6141 (ncurses-bin 6.5+20250216-2, LOW)
+- CVE-2025-69720 (ncurses-bin 6.5+20250216-2, HIGH)
+- CVE-2009-4487 (nginx 1.31.2-1~trixie, LOW)
+- CVE-2013-0337 (nginx 1.31.2-1~trixie, LOW)
+- CVE-2026-42533 (nginx 1.31.2-1~trixie, HIGH)
+- CVE-2026-56434 (nginx 1.31.2-1~trixie, MEDIUM)
+- CVE-2026-60005 (nginx 1.31.2-1~trixie, HIGH)
+- CVE-2026-14456 (openssl-provider-legacy 3.5.6-1~deb13u2, HIGH)
+- CVE-2026-75803 (openssl-provider-legacy 3.5.6-1~deb13u2, UNKNOWN)
+- CVE-2026-14456 (openssl 3.5.6-1~deb13u2, HIGH)
+- CVE-2026-75803 (openssl 3.5.6-1~deb13u2, UNKNOWN)
+- CVE-2007-5686 (passwd 1:4.17.4-2, LOW)
+- CVE-2024-56433 (passwd 1:4.17.4-2, LOW)
+- TEMP-0628843-DBAD28 (passwd 1:4.17.4-2, LOW)
+- CVE-2011-4116 (perl-base 5.40.1-6, LOW)
+- CVE-2025-15649 (perl-base 5.40.1-6, MEDIUM)
+- CVE-2026-12087 (perl-base 5.40.1-6, MEDIUM)
+- CVE-2026-13221 (perl-base 5.40.1-6, CRITICAL)
+- CVE-2026-15534 (perl-base 5.40.1-6, UNKNOWN)
+- CVE-2026-19487 (perl-base 5.40.1-6, UNKNOWN)
+- CVE-2026-42496 (perl-base 5.40.1-6, CRITICAL)
+- CVE-2026-42497 (perl-base 5.40.1-6, HIGH)
+- CVE-2026-48959 (perl-base 5.40.1-6, MEDIUM)
+- CVE-2026-48961 (perl-base 5.40.1-6, MEDIUM)
+- CVE-2026-48962 (perl-base 5.40.1-6, HIGH)
+- CVE-2026-57432 (perl-base 5.40.1-6, HIGH)
+- CVE-2026-57433 (perl-base 5.40.1-6, HIGH)
+- CVE-2026-7010 (perl-base 5.40.1-6, MEDIUM)
+- CVE-2026-7017 (perl-base 5.40.1-6, UNKNOWN)
+- CVE-2026-8376 (perl-base 5.40.1-6, CRITICAL)
+- CVE-2026-9538 (perl-base 5.40.1-6, HIGH)
+- TEMP-0517018-A83CE6 (sysvinit-utils 3.14-4, LOW)
+- CVE-2005-2541 (tar 1.35+dfsg-3.1, LOW)
+- CVE-2026-18477 (tar 1.35+dfsg-3.1, MEDIUM)
+- CVE-2026-18508 (tar 1.35+dfsg-3.1, MEDIUM)
+- CVE-2026-5704 (tar 1.35+dfsg-3.1, MEDIUM)
+- TEMP-0290435-0B57B5 (tar 1.35+dfsg-3.1, LOW)
+- CVE-2022-0563 (util-linux 2.41-5, LOW)
+- CVE-2025-14104 (util-linux 2.41-5, LOW)
+- CVE-2026-13595 (util-linux 2.41-5, MEDIUM)
+- CVE-2026-27456 (util-linux 2.41-5, MEDIUM)
+- CVE-2026-3184 (util-linux 2.41-5, MEDIUM)
+- CVE-2026-53612 (util-linux 2.41-5, HIGH)
+- CVE-2026-53613 (util-linux 2.41-5, HIGH)
+- CVE-2026-53614 (util-linux 2.41-5, HIGH)
+- CVE-2026-53615 (util-linux 2.41-5, HIGH)
+- CVE-2026-27171 (zlib1g 1:1.3.dfsg+really1.3.1-1+b1, MEDIUM)
