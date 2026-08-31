@@ -1,0 +1,111 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:a282b9ee-ee3b-4dd7-beae-3e3eb06ece8a",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-08-28T07:07:22+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "manufacturer": {
+            "name": "Aqua Security Software Ltd."
+          },
+          "group": "aquasecurity",
+          "name": "trivy",
+          "version": "0.70.0"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "pkg:oci/gsa@sha256:50eb052f86a0758ded4763db9d0d86d013dfb0f39055ef3c01b39b01327ceed8?arch=amd64&repository_url=harbor-os.greenbone.net%2Fopenvas-scan-dev%2Fgsa",
+      "type": "container",
+      "name": "harbor-os.greenbone.net/openvas-scan-dev/gsa@sha256:50eb052f86a0758ded4763db9d0d86d013dfb0f39055ef3c01b39b01327ceed8",
+      "purl": "pkg:oci/gsa@sha256:50eb052f86a0758ded4763db9d0d86d013dfb0f39055ef3c01b39b01327ceed8?arch=amd64&repository_url=harbor-os.greenbone.net%2Fopenvas-scan-dev%2Fgsa",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:1617ddcbc71e1969afde1db08e7aaa69809e3e92201a6096585389e133f811a4"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:45f5ec448a08ec49d1c3ad3e12bc0e84d01e04526fa1196c277630f725a8149d"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:5964ea623be375a23aa56cf5bb206c3d77ed8600d0ef97d246d5fbcfe381eb97"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:97e4ece8f8a4d01b66df2c55c1f1e8a2860597b54dffbbc0df2f9942062cb34d"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:e8b0887a38f39a85e3d6d694f9f2c98905f642b98d61bb293d01f876550dcf88"
+        },
+        {
+          "name": "aquasecurity:trivy:ImageID",
+          "value": "sha256:68d2e8bab606b52e5b3bc3772118be025d00af7ef2ac0a599235b6b3e5a6e2af"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.created",
+          "value": "2026-08-28T07:03:35.031Z"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.description",
+          "value": "Greenbone Security Assistant - The web frontend for the Greenbone Community Edition"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.licenses",
+          "value": "AGPL-3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.revision",
+          "value": "37561c5328802acc1d182bab89cf928296e815d2"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.source",
+          "value": "https://github.com/greenbone/gsa"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.title",
+          "value": "gsa"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.url",
+          "value": "https://github.com/greenbone/gsa"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.version",
+          "value": "v28.3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:Reference",
+          "value": "harbor-os.greenbone.net/openvas-scan-dev/gsa@sha256:50eb052f86a0758ded4763db9d0d86d013dfb0f39055ef3c01b39b01327ceed8"
+        },
+        {
+          "name": "aquasecurity:trivy:RepoDigest",
+          "value": "harbor-os.greenbone.net/openvas-scan-dev/gsa@sha256:50eb052f86a0758ded4763db9d0d86d013dfb0f39055ef3c01b39b01327ceed8"
+        },
+        {
+          "name": "aquasecurity:trivy:SchemaVersion",
+          "value": "2"
+        },
+        {
+          "name": "aquasecurity:trivy:Size",
+          "value": "18668544"
+        }
+      ]
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "pkg:oci/gsa@sha256:50eb052f86a0758ded4763db9d0d86d013dfb0f39055ef3c01b39b01327ceed8?arch=amd64&repository_url=harbor-os.greenbone.net%2Fopenvas-scan-dev%2Fgsa",
+      "dependsOn": []
+    }
+  ],
+  "vulnerabilities": []
+}
