@@ -1,0 +1,722 @@
+# Management Console: postgres (+ upgrade init), backend (+ migration init),
+# worker, frontend (system-management), and the WST registration/websocket server.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: management-console-postgres
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: management-console-postgres
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: management-console-backend
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: management-console-backend
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: management-console-frontend
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: management-console-frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: management-console-wst-server
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: management-console-wst-server
+  ports:
+    - name: websocket
+      port: 9090
+      targetPort: 9090
+    - name: registration
+      port: 9081
+      targetPort: 9081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-console-postgres
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: management-console-postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: management-console-postgres
+    spec:
+      securityContext:
+        runAsUser: 10002
+        runAsGroup: 10002
+        fsGroup: 10002
+        runAsNonRoot: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: management-console-postgres
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+        - name: pgconf
+          configMap:
+            name: si-postgres-configs
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: chown-data
+          image: busybox:1.36
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "chown -R 10002:10002 /var/lib/postgresql/data && chmod 700 /var/lib/postgresql/data"]
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+        - name: postgres-upgrade
+          image: packages.greenbone.net/opensight/opensight-postgres:17.10.6@sha256:a2c6bfe6a91a64955f0531c41c83fb434eeab95550e8cfa2ce37415a0c27bfb1
+          imagePullPolicy: IfNotPresent
+          command: ["upgradeversion", "inplace"]
+          env:
+            - name: POSTGRES_USER
+              value: application-user
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: shm
+              mountPath: /dev/shm
+      containers:
+        - name: postgres
+          image: packages.greenbone.net/opensight/opensight-postgres:17.10.6@sha256:a2c6bfe6a91a64955f0531c41c83fb434eeab95550e8cfa2ce37415a0c27bfb1
+          imagePullPolicy: IfNotPresent
+          args: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+          env:
+            - name: POSTGRES_USER
+              value: application-user
+            - name: POSTGRES_DB
+              value: management-console-backend
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/management-console-db-password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: shm
+              mountPath: /dev/shm
+            - name: pgconf
+              mountPath: /etc/postgresql/postgresql.conf
+              subPath: management-console-postgresql.conf
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "application-user", "-d", "management-console-backend"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "256Mi"
+            limits:
+              cpu: "2"
+              memory: "1Gi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-console-backend
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: management-console-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: management-console-backend
+    spec:
+      securityContext:
+        runAsUser: 10031
+        runAsGroup: 10031
+        fsGroup: 10031
+        runAsNonRoot: true
+      volumes:
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z management-console-postgres 5432; do echo waiting for postgres; sleep 2; done"]
+        - name: wait-for-keycloak
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z keycloak 8080; do echo waiting for keycloak; sleep 3; done"]
+        - name: wait-for-notification-service
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z notification-service 8085; do echo waiting for notification-service; sleep 3; done"]
+        - name: migration
+          image: packages.greenbone.net/opensight-management-console/management-console-backend:0.32.0@sha256:a965d0ba20851c5220d958877212a5c913599de47163d9e86b9821e59016ec25
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: EXECUTION_MODE
+              value: migration_only
+            - name: ALLOWED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_BACKEND_ALLOWED_HOSTS
+            - name: CORS_ALLOWED_ORIGINS
+              value: http://localhost:5173
+            - name: DB_HOST
+              value: management-console-postgres
+            - name: DB_PASSWORD_FILE
+              value: /run/secrets/management-console-db-password
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_DB_USER
+            - name: DB_NAME
+              value: management-console-backend
+            - name: DEPENDENCIES_TIMEOUT
+              value: "120"
+            - name: DJANGO_SETTINGS_MODULE
+              value: management_console_backend.settings.default
+            - name: SYSTEM_MANAGEMENT_BASE_URL_EXTENSION
+              value: connector
+            - name: KEYCLOAK_REALM_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_REALM
+            - name: KEYCLOAK_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_PUBLIC_AUTH_URL
+            - name: BACKEND_CLIENT_ID
+              value: backend-client
+            - name: REGISTRATION_SERVICE_HOST
+              value: management-console-wst-server
+            - name: REGISTRATION_SERVICE_PORT
+              value: "9081"
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: LOG_FORMAT
+              value: json
+            - name: CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  name: si-ingress-tls
+                  key: tls.crt
+            - name: SECRET_KEY_FILE
+              value: /run/secrets/secret-key
+            - name: ENCRYPTION_KEY_FILE
+              value: /run/secrets/encryption-key
+            - name: ENCRYPTION_KEY_REPORT_PUSH_KC_CLIENT_FILE
+              value: /run/secrets/encryption-key-report-push-kc-client
+            - name: BACKEND_CLIENT_PASSWORD_FILE
+              value: /run/secrets/backend-client-password
+            - name: NOTIFICATION_SERVICE_HOST
+              value: notification-service
+            - name: NOTIFICATION_SERVICE_PORT
+              value: "8085"
+            - name: SCAN_MANAGEMENT_ENABLED
+              value: "False"
+            - name: REPORT_SERVICE_HOST
+              value: asset-management-backend
+            - name: REPORT_SERVICE_PORT
+              value: "8080"
+            - name: SUPPORT_PACKAGE_DOWNLOAD_URL_KEY_FILE
+              value: /run/secrets/support-package-download-url-key
+          volumeMounts:
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+      containers:
+        - name: backend
+          image: packages.greenbone.net/opensight-management-console/management-console-backend:0.32.0@sha256:a965d0ba20851c5220d958877212a5c913599de47163d9e86b9821e59016ec25
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: EXECUTION_MODE
+              value: service_start_only
+            - name: ALLOWED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_BACKEND_ALLOWED_HOSTS
+            - name: CORS_ALLOWED_ORIGINS
+              value: http://localhost:5173
+            - name: DB_HOST
+              value: management-console-postgres
+            - name: DB_PASSWORD_FILE
+              value: /run/secrets/management-console-db-password
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_DB_USER
+            - name: DB_NAME
+              value: management-console-backend
+            - name: DEPENDENCIES_TIMEOUT
+              value: "120"
+            - name: DJANGO_SETTINGS_MODULE
+              value: management_console_backend.settings.default
+            - name: SYSTEM_MANAGEMENT_BASE_URL_EXTENSION
+              value: connector
+            - name: KEYCLOAK_REALM_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_REALM
+            - name: KEYCLOAK_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_PUBLIC_AUTH_URL
+            - name: BACKEND_CLIENT_ID
+              value: backend-client
+            - name: REGISTRATION_SERVICE_HOST
+              value: management-console-wst-server
+            - name: REGISTRATION_SERVICE_PORT
+              value: "9081"
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: LOG_FORMAT
+              value: json
+            - name: CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  name: si-ingress-tls
+                  key: tls.crt
+            - name: SECRET_KEY_FILE
+              value: /run/secrets/secret-key
+            - name: ENCRYPTION_KEY_FILE
+              value: /run/secrets/encryption-key
+            - name: ENCRYPTION_KEY_REPORT_PUSH_KC_CLIENT_FILE
+              value: /run/secrets/encryption-key-report-push-kc-client
+            - name: BACKEND_CLIENT_PASSWORD_FILE
+              value: /run/secrets/backend-client-password
+            - name: TASK_UNPAIR_DELETED_APPLIANCE_RETRIES
+              value: "60"
+            - name: TASK_UNPAIR_DELETED_APPLIANCE_RETRY_DELAY_IN_SEC
+              value: "30"
+            - name: NOTIFICATION_SERVICE_HOST
+              value: notification-service
+            - name: NOTIFICATION_SERVICE_PORT
+              value: "8085"
+            - name: SCAN_MANAGEMENT_ENABLED
+              value: "False"
+            - name: REPORT_SERVICE_HOST
+              value: asset-management-backend
+            - name: REPORT_SERVICE_PORT
+              value: "8080"
+            - name: SUPPORT_PACKAGE_DOWNLOAD_URL_KEY_FILE
+              value: /run/secrets/support-package-download-url-key
+          volumeMounts:
+            - name: shm
+              mountPath: /dev/shm
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["sm_isready"]
+            initialDelaySeconds: 60
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "1"
+              memory: "256Mi"
+            limits:
+              cpu: "4"
+              memory: "1Gi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-console-backend-worker
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: management-console-backend-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: management-console-backend-worker
+    spec:
+      securityContext:
+        runAsUser: 10031
+        runAsGroup: 10031
+        fsGroup: 10031
+        runAsNonRoot: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z management-console-postgres 5432; do echo waiting for postgres; sleep 2; done"]
+        - name: wait-for-keycloak
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z keycloak 8080; do echo waiting for keycloak; sleep 3; done"]
+      containers:
+        - name: worker
+          image: packages.greenbone.net/opensight-management-console/management-console-backend:0.32.0@sha256:a965d0ba20851c5220d958877212a5c913599de47163d9e86b9821e59016ec25
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: EXECUTION_MODE
+              value: taskqueue_worker_only
+            - name: JOB_WORKERS
+              value: "25"
+            - name: JOB_WORKER_TYPE
+              value: greenlet
+            - name: ALLOWED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_BACKEND_ALLOWED_HOSTS
+            - name: CORS_ALLOWED_ORIGINS
+              value: http://localhost:5173
+            - name: DB_HOST
+              value: management-console-postgres
+            - name: DB_PASSWORD_FILE
+              value: /run/secrets/management-console-db-password
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_DB_USER
+            - name: DB_NAME
+              value: management-console-backend
+            - name: DEPENDENCIES_TIMEOUT
+              value: "120"
+            - name: DJANGO_SETTINGS_MODULE
+              value: management_console_backend.settings.default
+            - name: SYSTEM_MANAGEMENT_BASE_URL_EXTENSION
+              value: connector
+            - name: KEYCLOAK_REALM_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_REALM
+            - name: KEYCLOAK_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_PUBLIC_AUTH_URL
+            - name: BACKEND_CLIENT_ID
+              value: backend-client
+            - name: REGISTRATION_SERVICE_HOST
+              value: management-console-wst-server
+            - name: REGISTRATION_SERVICE_PORT
+              value: "9081"
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: LOG_FORMAT
+              value: json
+            - name: CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  name: si-ingress-tls
+                  key: tls.crt
+            - name: SECRET_KEY_FILE
+              value: /run/secrets/secret-key
+            - name: ENCRYPTION_KEY_FILE
+              value: /run/secrets/encryption-key
+            - name: ENCRYPTION_KEY_REPORT_PUSH_KC_CLIENT_FILE
+              value: /run/secrets/encryption-key-report-push-kc-client
+            - name: BACKEND_CLIENT_PASSWORD_FILE
+              value: /run/secrets/backend-client-password
+            - name: NOTIFICATION_SERVICE_HOST
+              value: notification-service
+            - name: NOTIFICATION_SERVICE_PORT
+              value: "8085"
+            - name: SCAN_MANAGEMENT_ENABLED
+              value: "False"
+            - name: REPORT_SERVICE_HOST
+              value: asset-management-backend
+            - name: REPORT_SERVICE_PORT
+              value: "8080"
+            - name: SUPPORT_PACKAGE_DOWNLOAD_URL_KEY_FILE
+              value: /run/secrets/support-package-download-url-key
+          volumeMounts:
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          resources:
+            requests:
+              cpu: "1"
+              memory: "128Mi"
+            limits:
+              cpu: "4"
+              memory: "512Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-console-frontend
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: management-console-frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: management-console-frontend
+    spec:
+      securityContext:
+        runAsUser: 10033
+        runAsGroup: 10033
+        fsGroup: 10033
+        runAsNonRoot: true
+      containers:
+        - name: frontend
+          image: packages.greenbone.net/opensight-management-console/management-console-frontend:0.31.0@sha256:4de6e4136240b05b7cb87a56c4290f9c944134801f46ec4c7292aacfe0072ddd
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: CSP_CONNECT_SRC
+              value: ""
+            - name: CSP_DEFAULT_SRC
+              value: ""
+            - name: CSP_FONT_SRC
+              value: ""
+            - name: CSP_FRAME_ANCESTORS_SRC
+              value: ""
+            - name: CSP_FRAME_SRC
+              value: ""
+            - name: CSP_IMG_SRC
+              value: ""
+            - name: CSP_MEDIA_SRC
+              value: ""
+            - name: CSP_OBJECT_SRC
+              value: ""
+            - name: CSP_SCRIPT_SRC
+              value: ""
+            - name: CSP_STYLE_SRC
+              value: ""
+            - name: FWS_REALM_CONFIG_URL
+              value: /auth/
+            - name: FWS_REALM_CONFIG_CLIENTID
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_WEB_CLIENT_NAME
+            - name: FWS_REALM_CONFIG_MSPID
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_MASTER_REALM
+            - name: FWS_REALM_CONFIG_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_REALM
+            - name: FWS_SIDE_NAV_MENU_SECTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: FWS_NAV_MENU_SECTIONS
+            - name: FWS_CONFIG_BASEURL
+              value: /api/system-management
+          readinessProbe:
+            exec:
+              command: ["curl", "-f", "http://localhost:8080/health/alive"]
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "50Mi"
+            limits:
+              cpu: "1"
+              memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-console-wst-server
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: management-console-wst-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: management-console-wst-server
+    spec:
+      securityContext:
+        runAsUser: 10032
+        runAsGroup: 10032
+        fsGroup: 10032
+        runAsNonRoot: true
+      volumes:
+        - name: tls
+          secret:
+            secretName: si-ingress-tls
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z management-console-postgres 5432; do echo waiting for postgres; sleep 2; done"]
+      containers:
+        - name: wst-server
+          image: packages.greenbone.net/opensight-management-console/management-console-wst-server:0.24.0@sha256:e5985b424937b5c2462809a04cee608669f73eefc9a782553893b61f7a4316cf
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: WST__LOGGING__JSON
+              value: "false"
+            - name: WST__DB__HOST
+              value: management-console-postgres
+            - name: WST__DB__PORT
+              value: "5432"
+            - name: WST__DB__DATABASE
+              value: management-console-backend
+            - name: WST__DB__PASSWORD_FILE
+              value: /run/secrets/management-console-db-password
+            - name: WST__DB__USER
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_DB_USER
+            - name: WST__DB__MIN_CONNECTIONS
+              value: "2"
+            - name: WST__DB__MAX_CONNECTIONS
+              value: "2"
+            - name: WST__WEBSOCKET__URL
+              value: 0.0.0.0:9090
+            - name: WST__WEBSOCKET__CERTIFICATE
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_WST_WEBSOCKET_CERTIFICATE
+            - name: WST__WEBSOCKET__CERTIFICATE_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: MANAGEMENT_CONSOLE_WST_WEBSOCKET_CERTIFICATE_KEY
+            - name: WST__FORWARDING__IP
+              value: 0.0.0.0
+            - name: WST__REGISTRATION__ACCEPT_SERVER
+              value: 0.0.0.0:9081
+            - name: WST__REGISTRATION__ADDITIONAL_HEADERS
+              value: x-subscription-key
+            - name: WST__REGISTRATION__ANNOUNCEMENT_SERVER
+              value: management-console-backend:8000
+            - name: WST__REGISTRATION__AUTH_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_URL
+            - name: WST__REGISTRATION__AUTH_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_PUBLIC_AUTH_URL
+            - name: WST__REGISTRATION__CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_CLIENT_WST
+            - name: WST__REGISTRATION__SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: si-secrets
+                  key: WST_CLIENT_PASSWORD
+            - name: WST__REGISTRATION__REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_REALM
+            - name: MALLOC_ARENA_MAX
+              value: "2"
+          ports:
+            - containerPort: 9090
+            - containerPort: 9081
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/ssl/certs/wst-cert.pem
+              subPath: tls.crt
+              readOnly: true
+            - name: tls
+              mountPath: /etc/ssl/keys/wst-key.pem
+              subPath: tls.key
+              readOnly: true
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            tcpSocket:
+              port: 9081
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "128Mi"
+            limits:
+              cpu: "2"
+              memory: "512Mi"

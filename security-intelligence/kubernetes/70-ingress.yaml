@@ -1,0 +1,112 @@
+# Ingress: the opensight nginx entry point that terminates TLS and routes to
+# the internal services by hostname (K8s Service DNS names match the upstream
+# compose network aliases, so the nginx map configs are reused unchanged).
+# Exposed via a LoadBalancer Service on 443/80. Switch to NodePort if your
+# cluster has no LoadBalancer implementation.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress
+  namespace: security-intelligence
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: ingress
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8443
+      protocol: TCP
+      nodePort: 30443
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+      nodePort: 30080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingress
+    spec:
+      securityContext:
+        runAsUser: 10004
+        runAsGroup: 10004
+        fsGroup: 10004
+        runAsNonRoot: true
+      volumes:
+        - name: tls
+          secret:
+            secretName: si-ingress-tls
+        - name: nginx-config
+          configMap:
+            name: si-ingress-nginx
+      containers:
+        - name: ingress
+          image: packages.greenbone.net/opensight/opensight-ingress:1.32.0@sha256:8dc18fb47162954666c6d122e78fd13a4ce19c44dc5ca95d3f9a199ddba0eff5
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - containerPort: 8443
+            - containerPort: 8080
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/nginx/server.cert
+              subPath: tls.crt
+              readOnly: true
+            - name: tls
+              mountPath: /etc/nginx/server.key
+              subPath: tls.key
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/stream/maps/ssl_preread_server_name.conf
+              subPath: ssl_preread_server_name.conf
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/http/maps/backends.conf
+              subPath: backends.conf
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/http/maps/redirects.conf
+              subPath: redirects.conf
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/http/maps/redirects_403.conf
+              subPath: redirects_403.conf
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/http/locations/overwrite.conf
+              subPath: overwrite.conf
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["curl", "-k", "-f", "https://localhost:8443/health/alive"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 12
+          livenessProbe:
+            exec:
+              command: ["curl", "-k", "-f", "https://localhost:8443/health/alive"]
+            initialDelaySeconds: 240
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "50Mi"
+            limits:
+              cpu: "2"
+              memory: "512Mi"
