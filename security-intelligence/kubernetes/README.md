@@ -31,6 +31,7 @@ si-env.yaml.tpl            Shared env ConfigMap template (envsubst, DOMAIN_NAME)
 50-vulnerability-intelligence.yaml   incl. dmz-proxy
 60-management-console.yaml incl. worker + WST server
 70-ingress.yaml            opensight nginx entry point (NodePort 30443/30080)
+61-scan-management.yaml    scan-management-frontend + scan-control-backend
 deploy.sh                  generates secrets + TLS cert, renders env, applies all
 ```
 
@@ -171,12 +172,36 @@ This removes everything including the PVCs and their data.
   add the cert/key to a `Secret`, mount it into the backend pod, and set
   `METAFEED_CLIENT_CERT_PATH` / `METAFEED_CLIENT_KEY_PATH` to the mount paths.
 - **Routes for components not in this product** (`user-management-*`,
-  `vulnerability-intelligence-dashboard`, `scan-management-*`) exist in the
+  `vulnerability-intelligence-dashboard`) exist in the
   nginx backend map (copied verbatim from upstream `settings.env`) but have no
   backing Service in this stack, so those paths return 502. This matches the
   upstream combined map and is harmless for the security-intelligence product.
+  `/scan-management` **is** backed — see the Scan Management section above.
 - **No HorizontalPodAutoscaler / PodDisruptionBudget / NetworkPolicy** are
   included. Add them for production hardening.
+
+## Scan Management
+
+The `/scan-management` UI and `/api/scan-management` API are included, wired as
+in the upstream `management-console` dev bundle (0.1.2-alpha.390):
+
+- `scan-management-frontend` (0.21.1-alpha5) serves `/scan-management`
+- `scan-control-backend` (0.0.2-alpha15) serves `/api/scan-management`
+- `management-console-backend` gets `SCAN_MANAGEMENT_ENABLED=True` plus the
+  `SCAN_CONTROL_*` sync settings from that bundle
+- `management-console-postgres` creates the extra `scan_control_backend`
+  database via the `si-postgres-init` ConfigMap (`/docker-entrypoint-initdb.d`)
+- `si-secrets` gains a dedicated `scan-control-encryption-key`
+  (**base64, exactly 32 bytes** — the backend's strict parser rejects hex;
+  `deploy.sh` generates it with `openssl rand -base64 32`)
+
+Both images are **dev-stage alphas** from
+`packages.greenbone.net/opensight-management-console-dev`, digest-pinned as
+shipped upstream. `SCAN_MANAGEMENT_ENABLED` exists in the 1.5.2 bundle (set to
+`False` there); the alpha wiring moves the API to `scan-control-backend` and
+this deployment follows that. Scanning itself additionally requires an
+`enterprise-container` scanner appliance pairing via the WST server — the UI
+will show no scan units until one is paired.
 
 ## Verifying the manifests (offline)
 

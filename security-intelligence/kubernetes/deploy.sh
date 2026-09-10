@@ -54,6 +54,7 @@ else
   MANAGEMENT_CONSOLE_DB_PASSWORD="$(gen16)"
   MANAGEMENT_CONSOLE_SECRET_KEY="$(gen32)"
   MANAGEMENT_CONSOLE_ENCRYPTION_KEY="$(gen16)"
+  SCAN_CONTROL_ENCRYPTION_KEY="$(openssl rand -base64 32)"
   OPENSIGHT_INITIAL_PASSWORD='openvas#user'
 
   kubectl create secret generic si-secrets \
@@ -82,7 +83,8 @@ else
     --from-literal=secret-key="${MANAGEMENT_CONSOLE_SECRET_KEY}" \
     --from-literal=encryption-key="${MANAGEMENT_CONSOLE_ENCRYPTION_KEY}" \
     --from-literal=encryption-key-report-push-kc-client="${MANAGEMENT_CONSOLE_ENCRYPTION_KEY}" \
-    --from-literal=support-package-download-url-key="${MANAGEMENT_CONSOLE_ENCRYPTION_KEY}"
+    --from-literal=support-package-download-url-key="${MANAGEMENT_CONSOLE_ENCRYPTION_KEY}" \
+    --from-literal=scan-control-encryption-key="${SCAN_CONTROL_ENCRYPTION_KEY}"
   echo "    done. Save these if you want a backup (stored in secret si-secrets):"
   echo "    kubectl -n ${NAMESPACE} get secret si-secrets -o jsonpath='{.data}'"
 fi
@@ -119,6 +121,7 @@ kubectl apply -f "${SCRIPT_DIR}/30-notification-service.yaml"
 kubectl apply -f "${SCRIPT_DIR}/40-asset-management.yaml"
 kubectl apply -f "${SCRIPT_DIR}/50-vulnerability-intelligence.yaml"
 kubectl apply -f "${SCRIPT_DIR}/60-management-console.yaml"
+kubectl apply -f "${SCRIPT_DIR}/61-scan-management.yaml"
 kubectl apply -f "${SCRIPT_DIR}/70-ingress.yaml"
 
 echo

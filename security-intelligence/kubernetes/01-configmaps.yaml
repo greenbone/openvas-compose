@@ -93,7 +93,7 @@ data:
     ~^/api/vulnerability-intelligence(/.*)?$ vulnerability-intelligence-backend.security-intelligence.svc.cluster.local:8080;
     ~^/docs/vulnerability-intelligence(/.*)?$ vulnerability-intelligence-backend.security-intelligence.svc.cluster.local:8080;
     ~^/scan-management(/.*)?$ scan-management-frontend.security-intelligence.svc.cluster.local:8080;
-    ~^/api/scan-management(/.*)?$ management-console-backend.security-intelligence.svc.cluster.local:8000;
+    ~^/api/scan-management(/.*)?$ scan-control-backend.security-intelligence.svc.cluster.local:8080;
     ~^/api/notification-service(/.*)?$ notification-service.security-intelligence.svc.cluster.local:8085;
     ~^/docs/notification-service(/.*)?$ notification-service.security-intelligence.svc.cluster.local:8085;
     ~^/notification-service(/.*)?$ notification-service-frontend.security-intelligence.svc.cluster.local:8080;
@@ -106,4 +106,12 @@ data:
   redirects_403.conf: |
     map $uri $redirects_403 { default ""; }
   overwrite.conf: |
-    location /api/asset-management/events/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/asset-management/export/vulnerabilities/generic/download/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/sboms/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/gea/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; }
+    location /api/asset-management/events/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/asset-management/export/vulnerabilities/generic/download/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/sboms/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/gea/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; }---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: si-postgres-init
+  namespace: security-intelligence
+data:
+  001-init.sql: |
+    CREATE DATABASE scan_control_backend;

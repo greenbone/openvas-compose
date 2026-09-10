@@ -87,6 +87,9 @@ spec:
         - name: pgconf
           configMap:
             name: si-postgres-configs
+        - name: pginit
+          configMap:
+            name: si-postgres-init
         - name: secrets
           secret:
             secretName: si-secrets
@@ -133,6 +136,9 @@ spec:
             - name: pgconf
               mountPath: /etc/postgresql/postgresql.conf
               subPath: management-console-postgresql.conf
+            - name: pginit
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
             - name: secrets
               mountPath: /run/secrets
               readOnly: true
@@ -260,7 +266,13 @@ spec:
             - name: NOTIFICATION_SERVICE_PORT
               value: "8085"
             - name: SCAN_MANAGEMENT_ENABLED
-              value: "False"
+              value: "True"
+            - name: SCAN_CONTROL_SYNC_ENABLED
+              value: "True"
+            - name: SCAN_CONTROL_SERVICE_HOST
+              value: scan-control-backend
+            - name: SCAN_CONTROL_SERVICE_PORT
+              value: "8080"
             - name: REPORT_SERVICE_HOST
               value: asset-management-backend
             - name: REPORT_SERVICE_PORT
@@ -349,7 +361,13 @@ spec:
             - name: NOTIFICATION_SERVICE_PORT
               value: "8085"
             - name: SCAN_MANAGEMENT_ENABLED
-              value: "False"
+              value: "True"
+            - name: SCAN_CONTROL_SYNC_ENABLED
+              value: "True"
+            - name: SCAN_CONTROL_SERVICE_HOST
+              value: scan-control-backend
+            - name: SCAN_CONTROL_SERVICE_PORT
+              value: "8080"
             - name: REPORT_SERVICE_HOST
               value: asset-management-backend
             - name: REPORT_SERVICE_PORT
@@ -484,7 +502,13 @@ spec:
             - name: NOTIFICATION_SERVICE_PORT
               value: "8085"
             - name: SCAN_MANAGEMENT_ENABLED
-              value: "False"
+              value: "True"
+            - name: SCAN_CONTROL_SYNC_ENABLED
+              value: "True"
+            - name: SCAN_CONTROL_SERVICE_HOST
+              value: scan-control-backend
+            - name: SCAN_CONTROL_SERVICE_PORT
+              value: "8080"
             - name: REPORT_SERVICE_HOST
               value: asset-management-backend
             - name: REPORT_SERVICE_PORT
