@@ -106,7 +106,8 @@ data:
   redirects_403.conf: |
     map $uri $redirects_403 { default ""; }
   overwrite.conf: |
-    location /api/asset-management/events/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/asset-management/export/vulnerabilities/generic/download/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/sboms/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/gea/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; }---
+    location /api/asset-management/events/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/asset-management/export/vulnerabilities/generic/download/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/sboms/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/gea/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; }
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
