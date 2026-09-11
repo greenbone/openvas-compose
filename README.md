@@ -2,9 +2,6 @@
 
 Compose Artifacts, Release Logs and Sboms for Greenbone OPENVAS Containerized Products
 
-> [!IMPORTANT]
-> Only production releases are published here!
-
 ## Folder Structure
 
 ### Layout
