@@ -208,7 +208,17 @@ will show no scan units until one is paired.
 ```bash
 # YAML + envsubst render + cross-reference checks
 DOMAIN_NAME=opensight.example.com envsubst '${DOMAIN_NAME}' < si-env.yaml.tpl | kubectl apply --dry-run=client --validate=false -f -
-kubectl apply --dry-run=client --validate=false -f 00-namespace.yaml -f 01-configmaps.yaml -f 02-pvcs.yaml -f 10-keycloak.yaml -f 20-opensearch.yaml -f 30-notification-service.yaml -f 40-asset-management.yaml -f 50-vulnerability-intelligence.yaml -f 60-management-console.yaml -f 70-ingress.yaml
+kubectl apply --dry-run=client --validate=false -f 00-namespace.yaml -f 01-configmaps.yaml -f 02-pvcs.yaml -f 10-keycloak.yaml -f 20-opensearch.yaml -f 30-notification-service.yaml -f 40-asset-management.yaml -f 50-vulnerability-intelligence.yaml -f 60-management-console.yaml -f 61-scan-management.yaml -f 70-ingress.yaml
 ```
 
 (Use `--validate=true` against a real cluster for full OpenAPI validation.)
+---
+
+## Attribution
+
+This Kubernetes deployment was **AI-generated** with the **GLM-5.3** model
+(Z.ai, via the [pi coding agent](https://github.com/earendil-works/pi-coding-agent)),
+based on the compose bundles shipped in this repository. It was validated by
+full delete + re-deploy tests on a live cluster. The conversion rationale and
+every deviation from the compose bundle are documented in
+`K8S-NECESSARY-CHANGES.md`.
