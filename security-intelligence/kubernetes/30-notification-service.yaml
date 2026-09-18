@@ -1,0 +1,311 @@
+# Notification Service: postgres (+ upgrade init), backend, frontend.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service-postgres
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: notification-service-postgres
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: notification-service
+  ports:
+    - name: http
+      port: 8085
+      targetPort: 8085
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service-frontend
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: notification-service-frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service-postgres
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: notification-service-postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: notification-service-postgres
+    spec:
+      securityContext:
+        runAsUser: 10002
+        runAsGroup: 10002
+        fsGroup: 10002
+        runAsNonRoot: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: notification-service-postgres
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+        - name: pgconf
+          configMap:
+            name: si-postgres-configs
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: chown-data
+          image: busybox:1.36
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "chown -R 10002:10002 /var/lib/postgresql/data && chmod 700 /var/lib/postgresql/data"]
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+        - name: postgres-upgrade
+          image: packages.greenbone.net/opensight/opensight-postgres:17.10.6@sha256:a2c6bfe6a91a64955f0531c41c83fb434eeab95550e8cfa2ce37415a0c27bfb1
+          imagePullPolicy: IfNotPresent
+          command: ["upgradeversion", "inplace"]
+          env:
+            - name: POSTGRES_USER
+              value: application-user
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: shm
+              mountPath: /dev/shm
+      containers:
+        - name: postgres
+          image: packages.greenbone.net/opensight/opensight-postgres:17.10.6@sha256:a2c6bfe6a91a64955f0531c41c83fb434eeab95550e8cfa2ce37415a0c27bfb1
+          imagePullPolicy: IfNotPresent
+          args: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+          env:
+            - name: POSTGRES_USER
+              value: application-user
+            - name: POSTGRES_DB
+              value: notification-service
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/notification-service-db-password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: shm
+              mountPath: /dev/shm
+            - name: pgconf
+              mountPath: /etc/postgresql/postgresql.conf
+              subPath: notification-service-postgresql.conf
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "application-user", "-d", "notification-service"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: notification-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: notification-service
+    spec:
+      securityContext:
+        runAsUser: 10005
+        runAsGroup: 10005
+        fsGroup: 10005
+        runAsNonRoot: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z notification-service-postgres 5432; do echo waiting for postgres; sleep 2; done"]
+        - name: wait-for-keycloak
+          image: busybox:1.36
+          command: ["sh", "-c", "until nc -z keycloak 8080; do echo waiting for keycloak; sleep 3; done"]
+      containers:
+        - name: notification-service
+          image: packages.greenbone.net/opensight/opensight-notification-service:0.20.0@sha256:79d7b112cd3e120ee9877e66e1e8f79ed2afd4680095c55547a9f0d052c7269b
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: GOMEMLIMIT
+              value: 200MiB
+            - name: DB_HOST
+              value: notification-service-postgres
+            - name: DB_NAME
+              value: notification-service
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: NOTIFICATION_SERVICE_DB_USER
+            - name: DB_PASSWORD_FILE
+              value: /run/secrets/notification-service-db-password
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_SSL_MODE
+              value: disable
+            - name: DEPENDENCIES_TIMEOUT
+              value: "120"
+            - name: HTTP_PORT
+              value: "8085"
+            - name: LOG_LEVEL
+              value: debug
+            - name: GIN_MODE
+              value: release
+            - name: KEYCLOAK_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_PUBLIC_AUTH_URL
+          volumeMounts:
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["wget", "-qT", "1", "--spider", "http://localhost:8085/health/alive"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service-frontend
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: notification-service-frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: notification-service-frontend
+    spec:
+      securityContext:
+        runAsUser: 10008
+        runAsGroup: 10008
+        fsGroup: 10008
+        runAsNonRoot: true
+      containers:
+        - name: frontend
+          image: packages.greenbone.net/opensight/opensight-notification-service-frontend:1.14.0@sha256:4c505e495e927a66579bee1230bc770f62891390983a916e1a91c0a8b38ca78f
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: CSP_CONNECT_SRC
+              value: ""
+            - name: CSP_DEFAULT_SRC
+              value: ""
+            - name: CSP_FONT_SRC
+              value: ""
+            - name: CSP_FRAME_ANCESTORS_SRC
+              value: ""
+            - name: CSP_FRAME_SRC
+              value: ""
+            - name: CSP_IMG_SRC
+              value: ""
+            - name: CSP_MEDIA_SRC
+              value: ""
+            - name: CSP_OBJECT_SRC
+              value: ""
+            - name: CSP_SCRIPT_SRC
+              value: ""
+            - name: CSP_STYLE_SRC
+              value: ""
+            - name: FWS_REALM_CONFIG_URL
+              value: /auth/
+            - name: FWS_REALM_CONFIG_CLIENTID
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_WEB_CLIENT_NAME
+            - name: FWS_REALM_CONFIG_MSPID
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_MASTER_REALM
+            - name: FWS_REALM_CONFIG_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_REALM
+            - name: FWS_SIDE_NAV_MENU_SECTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: FWS_NAV_MENU_SECTIONS
+            - name: FWS_CONFIG_BASEURL
+              value: /api/notification-service
+            - name: FWS_CONFIG_ENABLE_MOCKS
+              value: "false"
+            - name: FWS_OSI_PRODUCT_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: PRODUCT_VERSION
+          readinessProbe:
+            exec:
+              command: ["curl", "-f", "http://localhost:8080/health/alive"]
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "50Mi"
+            limits:
+              cpu: "1"
+              memory: "256Mi"
