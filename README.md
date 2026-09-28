@@ -55,3 +55,11 @@ Compose Artifacts, Release Logs and Sboms for Greenbone OPENVAS Containerized Pr
   - **`RELEASE-<product>.md`**: Release info for the product.
   - **`CHANGELOG_<product>.md`**: Change log for the product.
   - **`sboms`**: Service Sboms.
+
+### Kubernetes Deployment
+A plain-manifest Kubernetes deployment for the `security-intelligence` product
+(converted from the production compose bundle, including the scan-management
+components from the management-console bundle) is available at
+[`security-intelligence/kubernetes/`](security-intelligence/kubernetes/) — see its
+[README](security-intelligence/kubernetes/README.md) for prerequisites and the
+one-command `deploy.sh`.

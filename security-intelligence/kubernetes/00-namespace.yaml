@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security-intelligence
+  labels:
+    app.kubernetes.io/name: security-intelligence
+    app.kubernetes.io/part-of: opensight

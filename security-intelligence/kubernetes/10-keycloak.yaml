@@ -1,0 +1,284 @@
+# user-management (Keycloak): keycloak-postgres, keycloak, keycloak-sidecar.
+# The postgres "upgrade" one-shot from upstream compose is modelled as an
+# initContainer that shares the data PVC. The keycloak-sidecar one-shot
+# (realm/client/user bootstrap) is modelled as a Job.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-postgres
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: keycloak-postgres
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: security-intelligence
+spec:
+  selector:
+    app.kubernetes.io/name: keycloak
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-postgres
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak-postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: keycloak-postgres
+    spec:
+      securityContext:
+        runAsUser: 10002
+        runAsGroup: 10002
+        fsGroup: 10002
+        runAsNonRoot: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: keycloak-postgres
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+        - name: pgconf
+          configMap:
+            name: si-postgres-configs
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      initContainers:
+        - name: chown-data
+          image: busybox:1.36
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "chown -R 10002:10002 /var/lib/postgresql/data && chmod 700 /var/lib/postgresql/data"]
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+        - name: postgres-upgrade
+          image: packages.greenbone.net/opensight/opensight-postgres:17.10.6@sha256:a2c6bfe6a91a64955f0531c41c83fb434eeab95550e8cfa2ce37415a0c27bfb1
+          imagePullPolicy: IfNotPresent
+          command: ["upgradeversion", "inplace"]
+          env:
+            - name: POSTGRES_USER
+              value: application-user
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: shm
+              mountPath: /dev/shm
+      containers:
+        - name: postgres
+          image: packages.greenbone.net/opensight/opensight-postgres:17.10.6@sha256:a2c6bfe6a91a64955f0531c41c83fb434eeab95550e8cfa2ce37415a0c27bfb1
+          imagePullPolicy: IfNotPresent
+          args: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+          env:
+            - name: POSTGRES_USER
+              value: application-user
+            - name: POSTGRES_DB
+              value: keycloak
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/keycloak-db-password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: shm
+              mountPath: /dev/shm
+            - name: pgconf
+              mountPath: /etc/postgresql/postgresql.conf
+              subPath: keycloak-postgresql.conf
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "application-user", "-d", "keycloak"]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: security-intelligence
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: keycloak
+    spec:
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 10003
+        fsGroup: 10003
+        runAsNonRoot: true
+      containers:
+        - name: keycloak
+          image: packages.greenbone.net/opensight/opensight-keycloak:27.6.0@sha256:49f3a2674086145abbc4c856e3d14f720759a60212f4e61f16955645f57cf4bf
+          imagePullPolicy: IfNotPresent
+          args: ["start", "--hostname-strict=false", "--hostname-backchannel-dynamic=true", "--proxy-headers=xforwarded", "--http-enabled=true", "--optimized"]
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: KC_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_PUBLIC_AUTH_URL
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL
+              value: jdbc:postgresql://keycloak-postgres:5432/keycloak?ssl=allow
+            - name: KC_DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_DB_USER
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: si-secrets
+                  key: keycloak-db-password
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_ADMIN_USER
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: si-secrets
+                  key: KEYCLOAK_ADMIN_PASSWORD
+            - name: KC_PROXY_HEADERS
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KC_PROXY_HEADERS
+            - name: KC_PROXY_TRUSTED_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KC_PROXY_TRUSTED_ADDRESSES
+            - name: HTTP_PROXY
+              value: ""
+            - name: HTTPS_PROXY
+              value: ""
+            - name: NO_PROXY
+              value: "*"
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /auth/health/ready
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "768Mi"
+            limits:
+              cpu: "2"
+              memory: "1200Mi"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keycloak-sidecar
+  namespace: security-intelligence
+spec:
+  backoffLimit: 8
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: keycloak-sidecar
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 10003
+        fsGroup: 10003
+        runAsNonRoot: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: si-secrets
+      containers:
+        - name: sidecar
+          image: packages.greenbone.net/opensight/opensight-keycloak-sidecar:27.5.0@sha256:7d442b021ea10b6ac381af9031fd0f5b036c954cc8acf0791531b7c1a60a2c05
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: si-env
+          env:
+            - name: CONFIG_FILE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_SIDECAR_CONFIG_FILE_PATH
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_ADMIN_USER
+            - name: KEYCLOAK_ADMIN_PASSWORD_FILE
+              value: /run/secrets/KEYCLOAK_ADMIN_PASSWORD
+            - name: OSI_BOOTSTRAP_USERS_JSON
+              valueFrom:
+                configMapKeyRef:
+                  name: si-env
+                  key: KEYCLOAK_BOOTSTRAP_USERS_JSON
+            - name: OPENSEARCH_CLIENT_PASSWORD_FILE
+              value: /run/secrets/OPENSEARCH_CLIENT_PASSWORD
+            - name: ASSET_BACKEND_CLIENT_SECRET_FILE
+              value: /run/secrets/ASSET_BACKEND_CLIENT_SECRET
+            - name: VI_BACKEND_CLIENT_SECRET_FILE
+              value: /run/secrets/VI_BACKEND_CLIENT_SECRET
+            - name: LOG_LEVEL
+              value: INFO
+          volumeMounts:
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
