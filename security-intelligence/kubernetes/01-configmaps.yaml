@@ -1,0 +1,118 @@
+# Static ConfigMaps for the security-intelligence stack.
+# - si-postgres-configs: PostgreSQL configuration files for the four postgres
+#   instances that mount an explicit postgresql.conf (keycloak, notification,
+#   vulnerability-intelligence, management-console). The asset-management
+#   postgres uses its image default config (no override, per upstream compose).
+# - si-ingress-nginx: nginx map/location config files consumed by the opensight
+#   ingress image. These reference K8s Service DNS names that match the compose
+#   network aliases, so the upstream content is reused unchanged.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: si-postgres-configs
+  namespace: security-intelligence
+data:
+  keycloak-postgresql.conf: |
+    listen_addresses = '*'
+    port = 5432
+    max_connections = 100
+    shared_buffers = 128MB
+    effective_cache_size = 768MB
+    maintenance_work_mem = 64MB
+    checkpoint_completion_target = 0.9
+    wal_buffers = 7864kB
+    default_statistics_target = 100
+    random_page_cost = 1.1
+    effective_io_concurrency = 200
+    work_mem = 1213kB
+    huge_pages = off
+    min_wal_size = 1GB
+    max_wal_size = 4GB
+  notification-service-postgresql.conf: |
+    listen_addresses = '*'
+    port = 5432
+    max_connections = 100
+    shared_buffers = 512MB
+    effective_cache_size = 1536MB
+    maintenance_work_mem = 128MB
+    checkpoint_completion_target = 0.9
+    wal_buffers = 16MB
+    default_statistics_target = 100
+    random_page_cost = 1.1
+    effective_io_concurrency = 200
+    work_mem = 32MB
+    huge_pages = off
+    min_wal_size = 1GB
+    max_wal_size = 4GB
+  vulnerability-intelligence-postgresql.conf: |
+    listen_addresses = '*'
+    port = 5432
+    max_connections = 100
+    shared_buffers = 512MB
+    effective_cache_size = 1536MB
+    maintenance_work_mem = 128MB
+    checkpoint_completion_target = 0.9
+    wal_buffers = 16MB
+    default_statistics_target = 100
+    random_page_cost = 1.1
+    effective_io_concurrency = 200
+    work_mem = 32MB
+    huge_pages = off
+    min_wal_size = 1GB
+    max_wal_size = 4GB
+  management-console-postgresql.conf: |
+    listen_addresses = '*'
+    port = 5432
+
+    max_connections = 100
+
+    work_mem=4MB
+
+    shared_buffers= 256MB
+    effective_cache_size=768MB
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: si-ingress-nginx
+  namespace: security-intelligence
+data:
+  ssl_preread_server_name.conf: |
+    map $ssl_preread_server_name $upstream { wst-server management-console-wst-server.security-intelligence.svc.cluster.local:9090; default 127.0.0.1:9443; }
+  backends.conf: |
+    map $uri $backend {
+    ~^/auth(/.*)?$ keycloak.security-intelligence.svc.cluster.local:8080;
+    ~^/asset-management(/.*)?$ asset-management-frontend.security-intelligence.svc.cluster.local:8080;
+    ~^/api/asset-management(/.*)?$ asset-management-backend.security-intelligence.svc.cluster.local:8080;
+    ~^/docs/asset-management(/.*)?$ asset-management-backend.security-intelligence.svc.cluster.local:8080;
+    ~^/user-management(/.*)?$ user-management-frontend.security-intelligence.svc.cluster.local:8080;
+    ~^/api/user-management(/.*)?$ user-management-backend.security-intelligence.svc.cluster.local:8080;
+    ~^/vulnerability-intelligence(/.*)?$ vulnerability-intelligence-frontend.security-intelligence.svc.cluster.local:8080;
+    ~^/vulnerability-intelligence-dashboard(/.*)?$ vulnerability-intelligence-dashboard.security-intelligence.svc.cluster.local:5601;
+    ~^/api/vulnerability-intelligence(/.*)?$ vulnerability-intelligence-backend.security-intelligence.svc.cluster.local:8080;
+    ~^/docs/vulnerability-intelligence(/.*)?$ vulnerability-intelligence-backend.security-intelligence.svc.cluster.local:8080;
+    ~^/scan-management(/.*)?$ scan-management-frontend.security-intelligence.svc.cluster.local:8080;
+    ~^/api/scan-management(/.*)?$ scan-control-backend.security-intelligence.svc.cluster.local:8080;
+    ~^/api/notification-service(/.*)?$ notification-service.security-intelligence.svc.cluster.local:8085;
+    ~^/docs/notification-service(/.*)?$ notification-service.security-intelligence.svc.cluster.local:8085;
+    ~^/notification-service(/.*)?$ notification-service-frontend.security-intelligence.svc.cluster.local:8080;
+    ~^/system-management(/.*)?$ management-console-frontend.security-intelligence.svc.cluster.local:8080;
+    ~^/api/system-management(/.*)?$ management-console-backend.security-intelligence.svc.cluster.local:8000;
+    ~^/docs/system-management/?$ management-console-backend.security-intelligence.svc.cluster.local:8000;
+    }
+  redirects.conf: |
+    map $uri $redirects { / https://$http_host/asset-management; }
+  redirects_403.conf: |
+    map $uri $redirects_403 { default ""; }
+  overwrite.conf: |
+    location /api/asset-management/events/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/asset-management/export/vulnerabilities/generic/download/ { proxy_buffering off; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/sboms/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; } location /api/vulnerability-intelligence/gea/upload { client_max_body_size 15M; proxy_read_timeout 120s; limit_req zone=vi_chunked_upload_limit burst=40; limit_req_status 429; include conf.d/http/proxy.conf; }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: si-postgres-init
+  namespace: security-intelligence
+data:
+  001-init.sql: |
+    CREATE DATABASE scan_control_backend;
