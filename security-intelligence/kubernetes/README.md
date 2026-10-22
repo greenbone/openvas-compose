@@ -35,6 +35,13 @@ si-env.yaml.tpl            Shared env ConfigMap template (envsubst, DOMAIN_NAME)
 deploy.sh                  generates secrets + TLS cert, renders env, applies all
 ```
 
+## Podman (no Kubernetes cluster)
+
+The same manifests also deploy on plain Podman (5.x) via `podman kube play`,
+including a Quadlet unit for systemd - see [`../podman/README.md`](../podman/README.md).
+`../podman/deploy.sh` renders these files and rewrites the k8s-only parts
+(Service DNS, NodePort, filtered secrets), so there is no second manifest set.
+
 ## Prerequisites
 
 - A Kubernetes cluster (1.24+) with `kubectl` configured.
