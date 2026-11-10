@@ -63,6 +63,15 @@ Does **not** carry over:
   `nc -z` wait init containers matter here.
 - No `Service` objects / no ClusterIP / no load balancing across replicas
   (all Deployments are `replicas: 1` in this product, so this is a non-issue today).
+- **The `dmz-proxy` NetworkPolicy (`dmz-proxy-egress-lockdown`, inherited from
+  the k8s manifests) is NOT enforced by Podman** — `podman kube play` accepts
+  and silently skips it, so the SSRF boundary that the Kubernetes deployment
+  guarantees (dmz-proxy may only reach the internet, no internal services,
+  node network or metadata endpoints) is absent here. On Podman the same
+  protection must be enforced at the host level (e.g. a firewall/marker that
+  restricts the ingress container's egress to public HTTP(S), or running the
+  proxy in a dedicated isolated network/nftables zone). Do not treat the
+  rendered NetworkPolicy document as effective — it is inert.
 - PVC size/storageClass are not enforced (plain local volumes).
 - `podman kube play` takes exactly **one** YAML file — hence the render step.
 - Secrets live in the rendered YAML on disk; keep it 0600.
