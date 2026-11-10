@@ -18,11 +18,11 @@ set -euo pipefail
 # Every manifest hardcodes namespace 'security-intelligence' (00-namespace.yaml
 # .. 70-ingress.yaml, incl. nginx FQDNs), so a NAMESPACE override would create
 # secrets outside the stack's namespace - rejected rather than half-supported.
-if [[ "${NAMESPACE:-}" != "security-intelligence" ]]; then
+NAMESPACE="${NAMESPACE:-security-intelligence}"
+if [[ "${NAMESPACE}" != "security-intelligence" ]]; then
   echo "error: NAMESPACE override is not supported - all manifests deploy to namespace 'security-intelligence'" >&2
   exit 1
 fi
-NAMESPACE="security-intelligence"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 require() { command -v "$1" >/dev/null 2>&1 || { echo "error: required tool '$1' not found" >&2; exit 1; }; }
