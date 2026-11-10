@@ -38,6 +38,24 @@ deploy.sh                  generates secrets + TLS cert, renders env, applies al
 ## Prerequisites
 
 - A Kubernetes cluster (1.24+) with `kubectl` configured.
+- **A CNI that enforces NetworkPolicies** (Calico, Cilium, kube-router, …).
+  The deployment ships `NetworkPolicy dmz-proxy-egress-lockdown` to restore the
+  compose bundle's SSRF boundary for the dmz-proxy: clusters whose CNI does not
+  enforce NetworkPolicies accept the object silently but leave the proxy able to
+  reach internal addresses — treat enforcement as a hard prerequisite. Verify on
+  the target cluster BEFORE going live, e.g.:
+  ```bash
+  # must SUCCEED (internet):            must FAIL (cluster-internal):
+  kubectl -n security-intelligence exec deploy/dmz-proxy -- \
+    wget -qT10 --spider http://example.com/ && echo egress-ok
+  kubectl -n security-intelligence exec deploy/dmz-proxy -- \
+    sh -c '! wget -qT5 --spider http://keycloak:8080/' && echo isolation-ok
+  ```
+  The DNS rule targets kube-dns-labelled pods in `kube-system` (CoreDNS via
+  kubeadm); adapt the selector and the excluded private ranges in
+  `50-vulnerability-intelligence.yaml` if your cluster uses other ranges — a
+  too-narrow exclusion list over-blocks CSAF downloads, a too-wide one weakens
+  the SSRF boundary.
 - A default `StorageClass` with dynamic provisioning (for the 7 PVCs). Without
   one, create the PVs manually or set `spec.storageClassName` in `02-pvcs.yaml`.
 - **Ingress exposure.** The manifests ship the ingress as a **NodePort**
@@ -194,8 +212,9 @@ This removes everything including the PVCs and their data.
   backing Service in this stack, so those paths return 502. This matches the
   upstream combined map and is harmless for the security-intelligence product.
   `/scan-management` **is** backed — see the Scan Management section above.
-- **No HorizontalPodAutoscaler / PodDisruptionBudget / NetworkPolicy** are
-  included. Add them for production hardening.
+- **No HorizontalPodAutoscaler / PodDisruptionBudget** are
+  included. Add them for production hardening. (An egress-locked NetworkPolicy
+  for `dmz-proxy` **is** included — see the prerequisites above.)
 
 ## Scan Management
 
