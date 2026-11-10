@@ -2,9 +2,6 @@
 
 Compose Artifacts, Release Logs and Sboms for Greenbone OPENVAS Containerized Products
 
-> [!IMPORTANT]
-> Only production releases are published here!
-
 ## Folder Structure
 
 ### Layout
@@ -12,52 +9,38 @@ Compose Artifacts, Release Logs and Sboms for Greenbone OPENVAS Containerized Pr
 ```
 /
 ├── <product>/
-│   ├── dev/
-│   │   └── CHANGELOG_<product>.md
-│   │   └── <version>/
-│   │       ├── <product>.tar.gz
-│   │       └── RELEASE-<product>.md
-│   │       └── sboms
-│   ├── integration/
-│   │   └── CHANGELOG_<product>.md
-│   │   └── <version>/
-│   │       ├── <product>.tar.gz
-│   │       └── RELEASE-<product>.md
-│   │       └── sboms
 │   ├── testing/
-│   │   └── CHANGELOG_<product>.md
 │   │   └── <version>/
 │   │       ├── <product>.tar.gz
-│   │       └── RELEASE-<product>.md
-│   │       └── sboms
+│   │       └── release-log-<product>.md
+│   │       └── <product>-<release>-merged-sbom.json
+│   │       └── sboms/
 │   ├── staging/
-│   │   └── CHANGELOG_<product>.md
 │   │   └── <version>/
 │   │       ├── <product>.tar.gz
-│   │       └── RELEASE-<product>.md
-│   │       └── sboms
+│   │       └── release-log-<product>.md
+│   │       └── <product>-<release>-merged-sbom.json
+│   │       └── sboms/
 │   └── production/
-│   │   └── CHANGELOG_<product>.md
 │       └── <version>/
 │           ├── <product>.tar.gz
-│   │       └── RELEASE-<product>.md
-│   │       └── sboms
+│   │       └── release-log-<product>.md
+│   │       └── <product>-<release>-merged-sbom.json
+│   │       └── sboms/
 ```
 
 ### Explanation
-- **Products**: `openvas-enterprise-container`, `detect`, `security-intelligence`
-- **Stages**: `dev`, `integration`, `testing`, `staging`, `production`
-- **Versioning**:
-  - **dev stage** uses **alpha** versions (e.g., `v1.0.0-alpha.1`)
-  - **integration stage** uses **alpha** versions (e.g., `v1.0.0-alpha.3`)
-  - **testing stage** uses **release candidate (rc)** versions (e.g., `v1.0.0-rc.1`)
-  - **staging** and **production** use stable **SemVer** versions (e.g., `v1.0.0`)
+- **Products**: `openvas-enterprise-container`, `security-intelligence`
+- **Stages**: `testing`, `staging`, `production`
 - **Version Folders**: Each stage contains version-specific folders.
 - **Files**:
-  - **`<PRODUCT>.tar.gz`**: Compose artifacts for the version.
-  - **`RELEASE-<product>.md`**: Release info for the product.
-  - **`CHANGELOG_<product>.md`**: Change log for the product.
+  - **`<product>.tar.gz`**: Compose artifacts for the release.
+  - **`release-log-<product>.md`**: Release info for the product.
+  - **`<product>-<release>-merged-sbom.json`**: Merged Sbom.
   - **`sboms`**: Service Sboms.
+- **Versioning**:
+  - **testing stage** uses **release candidate (rc)** versions (e.g., `v1.0.0-rc.1`)
+  - **staging** and **production** use stable **SemVer** versions (e.g., `v1.0.0`)
 
 ### Kubernetes Deployment
 A plain-manifest Kubernetes deployment for the `security-intelligence` product
@@ -66,3 +49,4 @@ components from the management-console bundle) is available at
 [`security-intelligence/kubernetes/`](security-intelligence/kubernetes/) — see its
 [README](security-intelligence/kubernetes/README.md) for prerequisites and the
 one-command `deploy.sh`.
+

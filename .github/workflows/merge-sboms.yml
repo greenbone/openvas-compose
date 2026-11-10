@@ -45,6 +45,7 @@ jobs:
           changed=0
 
           for dir in **/sboms; do
+            [[ "$dir" =~ "openvas-os" ]] && continue
             version_dir="${dir%/sboms}"
             version="${version_dir##*/}"
             product="${version_dir%/*/*}"
