@@ -132,7 +132,10 @@ spec:
               memory: "256Mi"
             limits:
               cpu: "1"
-              memory: "256Mi"
+              # the shipped notification postgresql.conf sets shared_buffers=512MB;
+              # a 256Mi limit would OOM-kill the database as soon as the buffer
+              # pool fills (upstream compose ships 256M, which is too small)
+              memory: "1Gi"
 ---
 apiVersion: apps/v1
 kind: Deployment

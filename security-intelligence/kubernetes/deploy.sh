@@ -32,6 +32,9 @@ require envsubst
 
 echo "==> Namespace: ${NAMESPACE}"
 echo "==> Domain:    ${DOMAIN_NAME}"
+# hostname without the port: Django compares only the hostname, URLs keep the
+# full authority
+export DOMAIN_NAME DOMAIN_HOST="${DOMAIN_NAME%%:*}"
 kubectl apply -f "${SCRIPT_DIR}/00-namespace.yaml"
 
 # --- si-secrets (all passwords) ---------------------------------------------
@@ -60,7 +63,10 @@ else
   MANAGEMENT_CONSOLE_SECRET_KEY="$(gen32)"
   MANAGEMENT_CONSOLE_ENCRYPTION_KEY="$(gen16)"
   SCAN_CONTROL_ENCRYPTION_KEY="$(openssl rand -base64 32)"
-  OPENSIGHT_INITIAL_PASSWORD='openvas#user'
+  # random instead of the compose's fixed 'openvas#user': the NodePort ingress
+  # is reachable before the first login, so a public default would let anyone
+  # take over the super-admin account
+  OPENSIGHT_INITIAL_PASSWORD="Openvas-$(openssl rand -hex 8)"
 
   kubectl -n security-intelligence create secret generic si-secrets \
     --from-literal=keycloak-db-password="${KEYCLOAK_DB_PASSWORD}" \
@@ -103,10 +109,14 @@ elif [[ -n "${TLS_CRT:-}" && -n "${TLS_KEY:-}" ]]; then
 else
   echo "==> Generating self-signed TLS certificate for ${DOMAIN_NAME}"
   tmp="$(mktemp -d)"
+  case "${DOMAIN_HOST}" in
+    *[!0-9.]*) TLS_SAN="DNS:${DOMAIN_HOST}" ;;
+    *)         TLS_SAN="IP:${DOMAIN_HOST}" ;;
+  esac
   openssl req -x509 -nodes -newkey rsa:2048 \
     -keyout "${tmp}/tls.key" -out "${tmp}/tls.crt" -days 3650 \
-    -subj "/CN=${DOMAIN_NAME}" \
-    -addext "subjectAltName=DNS:${DOMAIN_NAME}" >/dev/null 2>&1
+    -subj "/CN=${DOMAIN_HOST}" \
+    -addext "subjectAltName=${TLS_SAN}" >/dev/null 2>&1
   kubectl -n security-intelligence create secret tls si-ingress-tls --cert="${tmp}/tls.crt" --key="${tmp}/tls.key"
   rm -rf "${tmp}"
 fi
@@ -114,7 +124,7 @@ fi
 # --- si-env ConfigMap (DOMAIN_NAME substituted) ----------------------------
 echo "==> Rendering si-env ConfigMap"
 export DOMAIN_NAME
-envsubst '${DOMAIN_NAME}' < "${SCRIPT_DIR}/si-env.yaml.tpl" | kubectl -n security-intelligence apply -f -
+envsubst '${DOMAIN_NAME} ${DOMAIN_HOST}' < "${SCRIPT_DIR}/si-env.yaml.tpl" | kubectl -n security-intelligence apply -f -
 
 # --- apply the rest ---------------------------------------------------------
 echo "==> Applying manifests"
@@ -144,7 +154,9 @@ echo "    https://${DOMAIN_NAME}/asset-management"
 echo
 echo "==> First login:"
 echo "    user: openvas"
-echo "    password: openvas#user   (temporary - you will be asked to change it)"
+echo "    password (random, from secret si-secrets/INITIAL_PASSWORD):"
+echo "      kubectl -n security-intelligence get secret si-secrets -o jsonpath={.data.INITIAL_PASSWORD} | base64 -d; echo"
+echo "    (temporary - you will be asked to change it)"
 echo
 echo "==> Keycloak admin console: https://${DOMAIN_NAME}/auth/admin"
 echo "    admin user: admin"
