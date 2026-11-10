@@ -35,7 +35,7 @@ data:
   KC_PROXY_TRUSTED_ADDRESSES: "0.0.0.0/0"
   HTTP_ALLOWED_ORIGINS: "https://${DOMAIN_NAME}"
   REPORT_SOURCE_BASE_URL: "https://${DOMAIN_NAME}/asset-management/"
-  MANAGEMENT_CONSOLE_BACKEND_ALLOWED_HOSTS: "${DOMAIN_NAME}, 0.0.0.0, management-console-backend"
+  MANAGEMENT_CONSOLE_BACKEND_ALLOWED_HOSTS: "${DOMAIN_HOST}, 0.0.0.0, management-console-backend"
   ASSET_MANAGEMENT_DB_USER: "application-user"
   VULNERABILITY_INTELLIGENCE_DB_USER: "application-user"
   NOTIFICATION_SERVICE_DB_USER: "application-user"

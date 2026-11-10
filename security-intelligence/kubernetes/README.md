@@ -130,7 +130,7 @@ First login:
 | field    | value          |
 |----------|----------------|
 | user     | `openvas`      |
-| password | `openvas#user` (temporary — you are forced to change it) |
+| password | random, from secret `si-secrets/INITIAL_PASSWORD` (temporary — you are forced to change it): <br>`kubectl -n security-intelligence get secret si-secrets -o jsonpath='{.data.INITIAL_PASSWORD}' \| base64 -d; echo` |
 
 Keycloak admin console: `https://<DOMAIN_NAME>/auth/admin`
 user `admin`, password:
@@ -146,6 +146,23 @@ Re-running `deploy.sh` is safe: secrets are preserved and the manifests are
 applied (idempotent). To change the domain, just re-run with a new
 `DOMAIN_NAME` (the `si-env` ConfigMap is re-rendered; you may need to restart
 pods that already cached the old env: `kubectl -n security-intelligence rollout restart deploy`).
+
+**Two things a domain change does NOT happen automatically:**
+
+1. **Keycloak bootstrap.** The `keycloak-sidecar` `Job` injects the redirect
+   URIs once and never re-runs on its own. Delete it before re-applying so a
+   new run picks up the new `DOMAIN_NAME`:
+   ```bash
+   kubectl -n security-intelligence delete job keycloak-sidecar
+   kubectl apply -f 10-keycloak.yaml
+   ```
+2. **TLS certificate.** `deploy.sh` reuses an existing `si-ingress-tls`
+   Secret, which still covers the old hostname. Delete it so a fresh one is
+   generated (or pre-create/point at your own):
+   ```bash
+   kubectl -n security-intelligence delete secret si-ingress-tls
+   DOMAIN_NAME=<new-domain> ./deploy.sh
+   ```
 
 ## Uninstall
 

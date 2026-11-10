@@ -40,7 +40,8 @@ the places where Kubernetes requires a different mechanism.
 | 15 | nginx `/` redirect uses `$host` | `$http_host` | `$host` strips the port; with a NodePort the redirect must keep `:30443` |
 | 16 | `KEYCLOAK_SIDECAR_CONFIG_FILE_PATH` / `KEYCLOAK_BOOTSTRAP_USERS_JSON` (env names in the shared env) | mapped to `CONFIG_FILE_PATH` / `OSI_BOOTSTRAP_USERS_JSON` on the sidecar Job | the sidecar image reads those exact env names; the shared ConfigMap stores them under the upstream variable names |
 | 17 | `KC_PROXY_TRUSTED_ADDRESSES` = pod CIDR | `0.0.0.0/0` (kept as upstream default) | the compose derives this from `DOCKER_NETWORK_CIDR`; in K8s the pod CIDR is cluster‑specific. Left as upstream default; tighten for production |
-| 18 | dmz‑proxy on an isolated compose network | plain Service (no NetworkPolicy) | K8s networks are flat by default; isolation needs a NetworkPolicy (not added) |
+| 18 | dmz‑proxy on an isolated compose network | plain Service + `NetworkPolicy dmz-proxy-egress-lockdown` (egress‑allow DNS + internet HTTP(S) only) | K8s networks are flat by default; the policy restores the SSRF boundary (private CIDRs cluster‑specific) |
+| 23 | shipped constant initial password `openvas#user` | `deploy.sh` generates a random initial password (secret `si-secrets/INITIAL_PASSWORD`) | identical for every deployment upstream; with an immediately reachable NodePort ingress anyone could complete the forced password change and take over the super‑admin account before the operator logs in |
 | 19 | opensearch `vm.max_map_count` (host sysctl) | privileged `sysctl` initContainer | the JVM needs `vm.max_map_count>=262144`; in K8s this is set via a privileged init container (or node‑level) |
 | 20 | self‑signed TLS | `deploy.sh` generates a self‑signed cert for `DOMAIN_NAME` | compose expects `INGRESS_CERTIFICATE`/`INGRESS_PRIVATE_KEY` from the host env; `deploy.sh` materialises them as a K8s TLS Secret |
 | 21 | frontend `FWS_SIDE_NAV_MENU_SECTIONS` | explicit env from `si-env/FWS_NAV_MENU_SECTIONS` on all 4 frontends | compose maps `FWS_SIDE_NAV_MENU_SECTIONS: ${FWS_NAV_MENU_SECTIONS}`; the app reads the former, not the latter — `envFrom` alone left it unset → outdated sidenav |
@@ -62,6 +63,14 @@ and runs `chown`/postgres-upgrade/`initdb` against the live database directory. 
 crashes against the live data or blocks on the old attachment — the rollout stalls.
 All five postgres Deployments and the single-node OpenSearch are one-replica with a
 shared data PVC → `strategy: {type: Recreate}` (stop old pod, then start replacement).
+
+### 23. Random initial super-admin password
+Upstream ships a fixed initial password (`openvas#user`) for the `openvas`
+super-admin with a forced change on first login. Because the ingress is reachable
+from anywhere that can route to the NodePort, a publicly known password creates a
+takeover window before the operator's first login. `deploy.sh` therefore generates
+a random initial password into `si-secrets/INITIAL_PASSWORD` and prints where to
+read it; the forced-change-on-first-login behaviour is unchanged.
 
 ---
 
@@ -196,10 +205,12 @@ unset). **Tighten to your pod/service CIDR for production.**
 ### 18. dmz‑proxy isolation
 Compose puts `dmz-proxy` on an isolated network (`vulnerability-intelligence-proxy-net`)
 so it cannot reach internal services (SSRF protection for outbound CSAF downloads).
-K8s networking is flat by default; without a `NetworkPolicy` the dmz‑proxy can
-reach internal services. **No NetworkPolicy is included** (none existed in compose
-either — isolation was via compose networking). Add a `NetworkPolicy` to restore
-isolation if required.
+K8s networking is flat by default. The deployment now includes
+`NetworkPolicy dmz-proxy-egress-lockdown` (in `50-vulnerability-intelligence.yaml`):
+the proxy may only resolve DNS and speak HTTP(S) to the internet — cluster pods,
+services, the node network and the cloud metadata endpoint are excluded from its
+egress. The excepted private CIDRs are cluster‑specific; adjust them if your
+cluster uses other ranges.
 
 ### 19. OpenSearch `vm.max_map_count`
 The JVM requires `vm.max_map_count >= 262144`. Compose relies on the host/Docker
@@ -285,10 +296,11 @@ unchanged behaviour — it is **not** a modification introduced by the conversio
   `asset-management-frontend:1.33.0` (by tag, unpinned) resolves to the same digest
   (`sha256:beb5b9cba…`), confirming the `1.33.0` tag has not been re‑released.
 
-> If a **newer** 1.5.2 build exists (a different tarball whose `images.env` pins
-> newer component versions, e.g. a frontend newer than 1.33.0), place that tarball
-> at `/root/1.5.2/` and re‑run `deploy.sh`; the manifests will pick up the new
-> pinned digests automatically (the image references are the only thing that must
-> match the new bundle, and they are read from the bundle's `images.env` at
-> manifest‑authoring time — see `restore-from-export.md` / `deployment-guide.md`
-> for the regenerate flow).
+> If a **newer** 1.5.2 build exists (e.g. a frontend newer than 1.33.0), the
+> manifests must pick up its new pinned digests **before** `deploy.sh` can
+> deploy it: `deploy.sh` only applies the checked-in manifests and never reads
+> a tarball or `images.env`. Update the image references in the manifests (or
+> regenerate them from the new bundle — see `restore-from-export.md` /
+> `deployment-guide.md` for the authoring-time flow), then re-run `deploy.sh`.
+> Re-running the script with unchanged manifests intentionally redeploys the
+> same digest-pinned images.
