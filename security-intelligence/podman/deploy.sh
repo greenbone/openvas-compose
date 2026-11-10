@@ -26,11 +26,15 @@ STACK_DIR="$(cd "${SCRIPT_DIR}/../kubernetes" && pwd)"
 WORKDIR="${WORKDIR:-${SCRIPT_DIR}/rendered}"
 DNS_SUFFIX="${DNS_SUFFIX:-.dns.podman}"   # netavark's pod DNS domain
 
+# every file we write contains credentials or the TLS private key
+umask 077
+
 require() { command -v "$1" >/dev/null 2>&1 || { echo "error: required tool '$1' not found" >&2; exit 1; }; }
 require podman
 require python3
 require openssl
 mkdir -p "${WORKDIR}"
+chmod 700 "${WORKDIR}"   # also tightens a workdir created by an older (umask 022) run
 
 echo "==> Project:   ${NAMESPACE}"
 echo "==> Domain:    ${DOMAIN_NAME}"
@@ -40,7 +44,6 @@ echo "==> Render to: ${WORKDIR}"
 ENVFILE="${WORKDIR}/si-secrets.env"
 if [[ ! -f "${ENVFILE}" ]]; then
   echo "==> Generating random passwords (${ENVFILE})"
-  umask 077
   gen16() { openssl rand -hex 16; }   # 32 hex chars
   gen32() { openssl rand -hex 32; }   # 64 hex chars
   # Keys that share one value in kubernetes/deploy.sh must share it here too:
@@ -81,8 +84,8 @@ if [[ ! -f "${ENVFILE}" ]]; then
     echo "support-package-download-url-key=${mc_key}"
     echo "scan-control-encryption-key=${scan_key}"
   } > "${ENVFILE}"
-  umask 022
 fi
+chmod 600 "${ENVFILE}"   # repair output written by an older umask-022 run
 INITIAL_PASSWORD="$(sed -n 's/^INITIAL_PASSWORD=//p' "${ENVFILE}")"
 
 # --- TLS ---------------------------------------------------------------------
@@ -90,8 +93,10 @@ CRT="${WORKDIR}/si-ingress-tls.crt"
 KEY="${WORKDIR}/si-ingress-tls.key"
 if [[ -s "${CRT}" && -s "${KEY}" ]]; then
   echo "==> Reusing TLS certificate ${CRT}"
+  chmod 600 "${CRT}" "${KEY}"   # repair output written by an older umask-022 run
 elif [[ -n "${TLS_CRT:-}" && -n "${TLS_KEY:-}" ]]; then
   cp "${TLS_CRT}" "${CRT}"; cp "${TLS_KEY}" "${KEY}"
+  chmod 600 "${CRT}" "${KEY}"   # provided copies are often 0644
 else
   echo "==> Generating self-signed TLS certificate for ${DOMAIN_NAME}"
   openssl req -x509 -nodes -newkey rsa:2048 -keyout "${KEY}" -out "${CRT}" -days 3650 \
@@ -135,6 +140,7 @@ for f in "${STACK_DIR}"/0[12]-*.yaml "${WORKDIR}/si-env.yaml" "${STACK_DIR}"/[1-
   [[ "${f}" == "${STACK_DIR}/00-namespace.yaml" ]] && continue   # no namespaces in podman
   { printf -- '\n---\n'; cat "${f}"; } >> "${WORKDIR}/security-intelligence.yaml"
 done
+chmod 600 "${WORKDIR}/00-secrets.yaml" "${WORKDIR}/security-intelligence.yaml"   # repair older umask-022 output
 
 python3 - "${WORKDIR}/security-intelligence.yaml" "${ENVFILE}" \
          "${STACK_DIR}" "${NAMESPACE}" "${DNS_SUFFIX}" "${PUBLISH_HTTPS}" "${PUBLISH_HTTP}" <<'PY'
