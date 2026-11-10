@@ -10,7 +10,9 @@ cd security-intelligence/podman
 DOMAIN_NAME=host:30443 ./deploy.sh       # renders ./rendered/ + podman kube play
 ```
 
-Then https://host:30443/asset-management, first login `openvas` / `openvas#user`.
+Then https://host:30443/asset-management, first login `openvas` and the randomly
+generated `INITIAL_PASSWORD` from `rendered/si-secrets.env` (temporary, forced
+change).
 Passwords/TLS are generated once into `rendered/` (mode 0600) and reused on
 re-runs; PVC data is kept.
 
@@ -92,6 +94,14 @@ Full `./deploy.sh` run against the real Greenbone images from
 Rendering is checked against the k8s manifests: Deployment/Service names,
 image references and PVC claim names are unchanged - only the service hosts,
 the ingress ports and the three filtered secret volumes differ.
+
+Since the 2026-10-22 live run, the fixes from the review round (umask 077
+permissions, dropping global PublishPort from the unit, random initial password,
+TLS CN/SAN without port) are verified with a stubbed renderer (`podman` stubbed,
+file modes and rendered ingress `hostPort` checked) but have **not** been
+re-run live against a real Podman host yet — the live host is not reachable in
+this session. Plan for the next live cycle: a full `./deploy.sh` + `--replace`
+re-run on a Podman 5.4 host with retained volumes.
 
 ## Differences to `../kubernetes/deploy.sh`
 

@@ -39,6 +39,9 @@ chmod 700 "${WORKDIR}"   # also tightens a workdir created by an older (umask 02
 echo "==> Project:   ${NAMESPACE}"
 echo "==> Domain:    ${DOMAIN_NAME}"
 echo "==> Render to: ${WORKDIR}"
+# hostname without the port: Django compares only the hostname, URLs keep
+# the full authority; also used for the TLS CN/SAN below
+DOMAIN_HOST="${DOMAIN_NAME%%:*}"
 
 # --- secrets (reused across re-runs: passwords are never rotated) ------------
 ENVFILE="${WORKDIR}/si-secrets.env"
@@ -61,7 +64,7 @@ if [[ ! -f "${ENVFILE}" ]]; then
     echo "OPENSEARCH_CLIENT_PASSWORD=${os_client}"
     echo "ELASTIC_AUTH_PASS=${os_client}"
     echo "vulnerability-intelligence-keycloak-opensearch-secret=${os_client}"
-    echo "INITIAL_PASSWORD=openvas#user"
+    echo "INITIAL_PASSWORD=Openvas-$(openssl rand -hex 8)"   # random: a public default would expose the super-admin on a reachable host
     echo "REPORTING_USER_PASSWORD=${report}"
     echo "REPORT_PASSWORD=${report}"
     echo "WST_CLIENT_PASSWORD=${wst}"
@@ -99,8 +102,12 @@ elif [[ -n "${TLS_CRT:-}" && -n "${TLS_KEY:-}" ]]; then
   chmod 600 "${CRT}" "${KEY}"   # provided copies are often 0644
 else
   echo "==> Generating self-signed TLS certificate for ${DOMAIN_NAME}"
+  case "${DOMAIN_HOST}" in
+    *[!0-9.]*) TLS_SAN="DNS:${DOMAIN_HOST}" ;;
+    *)         TLS_SAN="IP:${DOMAIN_HOST}" ;;
+  esac
   openssl req -x509 -nodes -newkey rsa:2048 -keyout "${KEY}" -out "${CRT}" -days 3650 \
-    -subj "/CN=${DOMAIN_NAME}" -addext "subjectAltName=DNS:${DOMAIN_NAME}" >/dev/null 2>&1
+    -subj "/CN=${DOMAIN_HOST}" -addext "subjectAltName=${TLS_SAN}" >/dev/null 2>&1
   chmod 600 "${KEY}"
 fi
 
@@ -133,7 +140,7 @@ fi
 
 # --- concat + rewrite -------------------------------------------------------
 echo "==> Rendering stack"
-sed "s|\${DOMAIN_NAME}|${DOMAIN_NAME}|g" "${STACK_DIR}/si-env.yaml.tpl" > "${WORKDIR}/si-env.yaml"
+sed -e "s|\${DOMAIN_NAME}|${DOMAIN_NAME}|g" -e "s|\${DOMAIN_HOST}|${DOMAIN_HOST}|g" "${STACK_DIR}/si-env.yaml.tpl" > "${WORKDIR}/si-env.yaml"
 : > "${WORKDIR}/security-intelligence.yaml"
 { printf -- '\n---\n'; cat "${WORKDIR}/00-secrets.yaml"; } >> "${WORKDIR}/security-intelligence.yaml"
 for f in "${STACK_DIR}"/0[12]-*.yaml "${WORKDIR}/si-env.yaml" "${STACK_DIR}"/[1-7]?-*.yaml; do
