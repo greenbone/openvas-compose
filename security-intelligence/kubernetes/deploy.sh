@@ -5,7 +5,6 @@
 #   DOMAIN_NAME=opensight.example.com ./deploy.sh
 #
 # Optional environment:
-#   NAMESPACE         (default: security-intelligence)
 #   TLS_CRT/TLS_KEY   paths to a real certificate/key PEM; if unset a
 #                     self-signed cert for DOMAIN_NAME is generated.
 #   STORAGE_CLASS     set to force a storageClassName on all PVCs (requires
@@ -16,7 +15,14 @@
 set -euo pipefail
 
 : "${DOMAIN_NAME:?DOMAIN_NAME is required, e.g. DOMAIN_NAME=opensight.example.com ./deploy.sh}"
-NAMESPACE="${NAMESPACE:-security-intelligence}"
+# Every manifest hardcodes namespace 'security-intelligence' (00-namespace.yaml
+# .. 70-ingress.yaml, incl. nginx FQDNs), so a NAMESPACE override would create
+# secrets outside the stack's namespace - rejected rather than half-supported.
+if [[ "${NAMESPACE:-}" != "security-intelligence" ]]; then
+  echo "error: NAMESPACE override is not supported - all manifests deploy to namespace 'security-intelligence'" >&2
+  exit 1
+fi
+NAMESPACE="security-intelligence"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 require() { command -v "$1" >/dev/null 2>&1 || { echo "error: required tool '$1' not found" >&2; exit 1; }; }
@@ -27,10 +33,9 @@ require envsubst
 echo "==> Namespace: ${NAMESPACE}"
 echo "==> Domain:    ${DOMAIN_NAME}"
 kubectl apply -f "${SCRIPT_DIR}/00-namespace.yaml"
-kubectl config set-context --current --namespace="${NAMESPACE}" >/dev/null 2>&1 || true
 
 # --- si-secrets (all passwords) ---------------------------------------------
-if kubectl get secret si-secrets >/dev/null 2>&1; then
+if kubectl -n security-intelligence get secret si-secrets >/dev/null 2>&1; then
   echo "==> si-secrets already exists - reusing (passwords preserved)"
 else
   echo "==> Generating random passwords for si-secrets"
@@ -57,7 +62,7 @@ else
   SCAN_CONTROL_ENCRYPTION_KEY="$(openssl rand -base64 32)"
   OPENSIGHT_INITIAL_PASSWORD='openvas#user'
 
-  kubectl create secret generic si-secrets \
+  kubectl -n security-intelligence create secret generic si-secrets \
     --from-literal=keycloak-db-password="${KEYCLOAK_DB_PASSWORD}" \
     --from-literal=KEYCLOAK_ADMIN_PASSWORD="${KEYCLOAK_ADMIN_PASSWORD}" \
     --from-literal=OPENSEARCH_CLIENT_PASSWORD="${KEYCLOAK_OPENSEARCH_CLIENT_SECRET}" \
@@ -90,11 +95,11 @@ else
 fi
 
 # --- si-ingress-tls (TLS cert/key) ------------------------------------------
-if kubectl get secret si-ingress-tls >/dev/null 2>&1; then
+if kubectl -n security-intelligence get secret si-ingress-tls >/dev/null 2>&1; then
   echo "==> si-ingress-tls already exists - reusing"
 elif [[ -n "${TLS_CRT:-}" && -n "${TLS_KEY:-}" ]]; then
   echo "==> Creating si-ingress-tls from provided TLS_CRT/TLS_KEY"
-  kubectl create secret tls si-ingress-tls --cert="${TLS_CRT}" --key="${TLS_KEY}"
+  kubectl -n security-intelligence create secret tls si-ingress-tls --cert="${TLS_CRT}" --key="${TLS_KEY}"
 else
   echo "==> Generating self-signed TLS certificate for ${DOMAIN_NAME}"
   tmp="$(mktemp -d)"
@@ -102,14 +107,14 @@ else
     -keyout "${tmp}/tls.key" -out "${tmp}/tls.crt" -days 3650 \
     -subj "/CN=${DOMAIN_NAME}" \
     -addext "subjectAltName=DNS:${DOMAIN_NAME}" >/dev/null 2>&1
-  kubectl create secret tls si-ingress-tls --cert="${tmp}/tls.crt" --key="${tmp}/tls.key"
+  kubectl -n security-intelligence create secret tls si-ingress-tls --cert="${tmp}/tls.crt" --key="${tmp}/tls.key"
   rm -rf "${tmp}"
 fi
 
 # --- si-env ConfigMap (DOMAIN_NAME substituted) ----------------------------
 echo "==> Rendering si-env ConfigMap"
 export DOMAIN_NAME
-envsubst '${DOMAIN_NAME}' < "${SCRIPT_DIR}/si-env.yaml.tpl" | kubectl apply -f -
+envsubst '${DOMAIN_NAME}' < "${SCRIPT_DIR}/si-env.yaml.tpl" | kubectl -n security-intelligence apply -f -
 
 # --- apply the rest ---------------------------------------------------------
 echo "==> Applying manifests"

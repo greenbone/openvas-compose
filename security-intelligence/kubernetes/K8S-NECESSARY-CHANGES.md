@@ -44,11 +44,24 @@ the places where Kubernetes requires a different mechanism.
 | 19 | opensearch `vm.max_map_count` (host sysctl) | privileged `sysctl` initContainer | the JVM needs `vm.max_map_count>=262144`; in K8s this is set via a privileged init container (or node‑level) |
 | 20 | self‑signed TLS | `deploy.sh` generates a self‑signed cert for `DOMAIN_NAME` | compose expects `INGRESS_CERTIFICATE`/`INGRESS_PRIVATE_KEY` from the host env; `deploy.sh` materialises them as a K8s TLS Secret |
 | 21 | frontend `FWS_SIDE_NAV_MENU_SECTIONS` | explicit env from `si-env/FWS_NAV_MENU_SECTIONS` on all 4 frontends | compose maps `FWS_SIDE_NAV_MENU_SECTIONS: ${FWS_NAV_MENU_SECTIONS}`; the app reads the former, not the latter — `envFrom` alone left it unset → outdated sidenav |
+| 22 | container replace on update/restart (single-replica postgres/opensearch) | `strategy: {type: Recreate}` | the old pod would keep the shared data PVC mounted while the replacement `chown`s/starts `initdb` against the live database directory; `Recreate` stops the old pod first — this is the closest analog of compose's container replace |
 
 Items 8–13, 15–17, 19 are **cluster‑specific** adaptations (this bare‑metal kubeadm
 cluster: no LoadBalancer, `local-path` storage, flat networking). On a full
 cluster (LoadBalancer, shared storage, NetworkPolicy) some of these would revert
 closer to the compose.
+
+---
+
+### 22. Single-replica data workloads: `strategy: Recreate`
+
+Compose replaces a container in place. A Kubernetes Deployment defaults to
+`RollingUpdate` (`maxSurge=1, maxUnavailable=0`): on an image/template change or rollout
+restart the old pod stays running while the replacement mounts the **same RWO data PVC**
+and runs `chown`/postgres-upgrade/`initdb` against the live database directory. Either it
+crashes against the live data or blocks on the old attachment — the rollout stalls.
+All five postgres Deployments and the single-node OpenSearch are one-replica with a
+shared data PVC → `strategy: {type: Recreate}` (stop old pod, then start replacement).
 
 ---
 
