@@ -41,3 +41,12 @@ Compose Artifacts, Release Logs and Sboms for Greenbone OPENVAS Containerized Pr
 - **Versioning**:
   - **testing stage** uses **release candidate (rc)** versions (e.g., `v1.0.0-rc.1`)
   - **staging** and **production** use stable **SemVer** versions (e.g., `v1.0.0`)
+
+### Kubernetes Deployment
+A plain-manifest Kubernetes deployment for the `security-intelligence` product
+(converted from the production compose bundle, including the scan-management
+components from the management-console bundle) is available at
+[`security-intelligence/kubernetes/`](security-intelligence/kubernetes/) — see its
+[README](security-intelligence/kubernetes/README.md) for prerequisites and the
+one-command `deploy.sh`.
+
