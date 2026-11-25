@@ -1,0 +1,119 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:1df13874-782c-4159-a6fa-7c8d4cb5e2e6",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-16T13:22:52+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "manufacturer": {
+            "name": "Aqua Security Software Ltd."
+          },
+          "group": "aquasecurity",
+          "name": "trivy",
+          "version": "0.70.0"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "pkg:oci/gpg-data@sha256:0b9845cf7d582eefee649bd8864c252ad400c73c125f6133f63e54e71c805c24?arch=amd64&repository_url=harbor-os.greenbone.net%2Fopenvas-detect-dev%2Fgpg-data",
+      "type": "container",
+      "name": "harbor-os.greenbone.net/openvas-detect-dev/gpg-data:v1.1.6",
+      "purl": "pkg:oci/gpg-data@sha256:0b9845cf7d582eefee649bd8864c252ad400c73c125f6133f63e54e71c805c24?arch=amd64&repository_url=harbor-os.greenbone.net%2Fopenvas-detect-dev%2Fgpg-data",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:97e4ece8f8a4d01b66df2c55c1f1e8a2860597b54dffbbc0df2f9942062cb34d"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:ca96a4dff1a4323204453028b2133589fb216bb8c25f425a1c45d4b1ab32ae4c"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:f1672e2463c622190ae953535e1dda2947372050f4d9486fd3d7476ed7caca3e"
+        },
+        {
+          "name": "aquasecurity:trivy:ImageID",
+          "value": "sha256:7bffa7897e3927fac46db1e71aef28263b54094eefb8e679020605617cca1607"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.base.name",
+          "value": "busybox:stable"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.created",
+          "value": "2026-11-16T13:20:59.405Z"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.description",
+          "value": "Additional Container Images from Greenbone"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.documentation",
+          "value": "https://greenbone.github.io/docs/"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.licenses",
+          "value": "GPL-3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.revision",
+          "value": "a1b1c0fe9e749ef1232be663c6cd492967dae2c7"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.source",
+          "value": "https://github.com/greenbone/greenbone-container-images"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.title",
+          "value": "greenbone-container-images"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.url",
+          "value": "https://github.com/greenbone/greenbone-container-images"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.vendor",
+          "value": "Greenbone"
+        },
+        {
+          "name": "aquasecurity:trivy:Labels:org.opencontainers.image.version",
+          "value": "v1.1.6-amd64"
+        },
+        {
+          "name": "aquasecurity:trivy:Reference",
+          "value": "harbor-os.greenbone.net/openvas-detect-dev/gpg-data:v1.1.6"
+        },
+        {
+          "name": "aquasecurity:trivy:RepoDigest",
+          "value": "harbor-os.greenbone.net/openvas-detect-dev/gpg-data@sha256:0b9845cf7d582eefee649bd8864c252ad400c73c125f6133f63e54e71c805c24"
+        },
+        {
+          "name": "aquasecurity:trivy:RepoTag",
+          "value": "harbor-os.greenbone.net/openvas-detect-dev/gpg-data:v1.1.6"
+        },
+        {
+          "name": "aquasecurity:trivy:SchemaVersion",
+          "value": "2"
+        },
+        {
+          "name": "aquasecurity:trivy:Size",
+          "value": "4663808"
+        }
+      ]
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "pkg:oci/gpg-data@sha256:0b9845cf7d582eefee649bd8864c252ad400c73c125f6133f63e54e71c805c24?arch=amd64&repository_url=harbor-os.greenbone.net%2Fopenvas-detect-dev%2Fgpg-data",
+      "dependsOn": []
+    }
+  ],
+  "vulnerabilities": []
+}
